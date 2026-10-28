@@ -1,0 +1,295 @@
+{
+  "version": 1,
+  "clock": {
+    "pulsesPerDay": 1
+  },
+  "knobs": {
+    "defaultCapPerTrader": 8,
+    "defaultCapPerMouth": 0,
+    "restockRawFloor": 0.25,
+    "markup": 1.5,
+    "capPerTrader": {
+      "carrot": 8,
+      "potato": 8
+    },
+    "capPerMouth": {
+      "wheat": 4,
+      "bread": 2,
+      "carrot": 2,
+      "potato": 2,
+      "beetroot": 2
+    }
+  },
+  "unemployed": 0,
+  "professions": {
+    "armorer": {
+      "n": 0,
+      "produce": [
+        {
+          "commodity": "iron_ingot",
+          "rate": 0
+        }
+      ],
+      "consume": [
+        {
+          "commodity": "coal",
+          "rate": 2
+        },
+        {
+          "commodity": "iron_ingot",
+          "rate": 0.5
+        }
+      ],
+      "offers": []
+    },
+    "butcher": {
+      "n": 0,
+      "produce": [],
+      "consume": [
+        {
+          "commodity": "coal",
+          "rate": 2
+        }
+      ],
+      "offers": []
+    },
+    "cartographer": {
+      "n": 0,
+      "produce": [],
+      "consume": [
+        {
+          "commodity": "paper",
+          "rate": 2
+        }
+      ],
+      "offers": []
+    },
+    "cleric": {
+      "n": 0,
+      "produce": [],
+      "consume": [
+        {
+          "commodity": "nether_wart",
+          "rate": 0.5
+        }
+      ],
+      "offers": []
+    },
+    "farmer": {
+      "n": 2,
+      "produce": [
+        {
+          "commodity": "wheat",
+          "rate": 8
+        },
+        {
+          "commodity": "carrot",
+          "rate": 4
+        },
+        {
+          "commodity": "potato",
+          "rate": 4
+        }
+      ],
+      "consume": [
+        {
+          "commodity": "wheat",
+          "rate": 1
+        },
+        {
+          "commodity": "carrot",
+          "rate": 1
+        },
+        {
+          "commodity": "potato",
+          "rate": 1
+        }
+      ],
+      "offers": [
+        {
+          "id": "farmer_buy_wheat",
+          "name": "Wheat Buy",
+          "direction": "buy",
+          "levels": "Novice",
+          "item": "wheat",
+          "components": {},
+          "enabled": true,
+          "restockPerVillagerDay": 4,
+          "vanillaEmeralds": 1
+        },
+        {
+          "id": "farmer_buy_wheat_copy",
+          "name": "Wheat Sell",
+          "direction": "sell",
+          "levels": "Novice",
+          "item": "wheat",
+          "components": {},
+          "enabled": true,
+          "restockPerVillagerDay": 4,
+          "vanillaEmeralds": 1
+        },
+        {
+          "id": "farmer_buy_wheat_seeds",
+          "name": "Wheat Seeds",
+          "direction": "buy",
+          "levels": "Novice",
+          "item": "wheat_seeds",
+          "components": {},
+          "enabled": true,
+          "restockPerVillagerDay": 4,
+          "vanillaEmeralds": 1
+        }
+      ]
+    },
+    "fisherman": {
+      "n": 0,
+      "produce": [
+        {
+          "commodity": "cod",
+          "rate": 2
+        }
+      ],
+      "consume": [
+        {
+          "commodity": "coal",
+          "rate": 1
+        }
+      ],
+      "offers": []
+    },
+    "fletcher": {
+      "n": 0,
+      "produce": [
+        {
+          "commodity": "arrow",
+          "rate": 4
+        }
+      ],
+      "consume": [
+        {
+          "commodity": "stick",
+          "rate": 4
+        },
+        {
+          "commodity": "flint",
+          "rate": 2
+        },
+        {
+          "commodity": "feather",
+          "rate": 2
+        }
+      ],
+      "offers": []
+    },
+    "leatherworker": {
+      "n": 0,
+      "produce": [],
+      "consume": [
+        {
+          "commodity": "leather",
+          "rate": 1
+        }
+      ],
+      "offers": []
+    },
+    "librarian": {
+      "n": 0,
+      "produce": [
+        {
+          "commodity": "enchanted_book",
+          "rate": 0.25
+        }
+      ],
+      "consume": [
+        {
+          "commodity": "paper",
+          "rate": 4
+        }
+      ],
+      "offers": []
+    },
+    "mason": {
+      "n": 0,
+      "produce": [
+        {
+          "commodity": "brick",
+          "rate": 4
+        }
+      ],
+      "consume": [
+        {
+          "commodity": "clay_ball",
+          "rate": 4
+        }
+      ],
+      "offers": []
+    },
+    "shepherd": {
+      "n": 0,
+      "produce": [
+        {
+          "commodity": "wool",
+          "rate": 6
+        }
+      ],
+      "consume": [
+        {
+          "commodity": "wheat",
+          "rate": 1
+        }
+      ],
+      "offers": []
+    },
+    "toolsmith": {
+      "n": 0,
+      "produce": [],
+      "consume": [
+        {
+          "commodity": "coal",
+          "rate": 2
+        },
+        {
+          "commodity": "iron_ingot",
+          "rate": 0.5
+        }
+      ],
+      "offers": []
+    },
+    "weaponsmith": {
+      "n": 0,
+      "produce": [],
+      "consume": [
+        {
+          "commodity": "coal",
+          "rate": 2
+        },
+        {
+          "commodity": "iron_ingot",
+          "rate": 0.25
+        }
+      ],
+      "offers": []
+    }
+  },
+  "stocks": {
+    "carrot": 10,
+    "potato": 10,
+    "wheat": 12,
+    "wheat_seeds": 8
+  },
+  "needs": {},
+  "scenario": {
+    "emeralds": 64,
+    "emeraldIncomePerDay": 8,
+    "repairBurn": {
+      "iron_ingot": 6,
+      "diamond": 1,
+      "coal": 8
+    },
+    "miningYield": {
+      "iron_ingot": 48,
+      "diamond": 3,
+      "coal": 32
+    }
+  }
+}

@@ -1,0 +1,3538 @@
+const TRADES = [
+  {
+    "id": "armorer_novice_sell_coal",
+    "profession": "armorer",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:coal",
+    "display_name": "Coal",
+    "quantity": 15,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "coal": 15
+    }
+  },
+  {
+    "id": "armorer_apprentice_sell_iron_ingot",
+    "profession": "armorer",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:iron_ingot",
+    "display_name": "Iron Ingot",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "iron_ingot": 4
+    }
+  },
+  {
+    "id": "armorer_journeyman_sell_lava_bucket",
+    "profession": "armorer",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:lava_bucket",
+    "display_name": "Lava Bucket",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "lava_bucket": 1
+    }
+  },
+  {
+    "id": "armorer_journeyman_sell_diamond",
+    "profession": "armorer",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:diamond",
+    "display_name": "Diamond",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "diamond": 1
+    }
+  },
+  {
+    "id": "armorer_novice_buy_iron_helmet",
+    "profession": "armorer",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:iron_helmet",
+    "display_name": "Iron Helmet",
+    "quantity": 1,
+    "emerald_cost": 5,
+    "max_uses": 12,
+    "recipe": {
+      "iron_ingot": 5
+    }
+  },
+  {
+    "id": "armorer_novice_buy_iron_chestplate",
+    "profession": "armorer",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:iron_chestplate",
+    "display_name": "Iron Chestplate",
+    "quantity": 1,
+    "emerald_cost": 9,
+    "max_uses": 12,
+    "recipe": {
+      "iron_ingot": 8
+    }
+  },
+  {
+    "id": "armorer_novice_buy_iron_leggings",
+    "profession": "armorer",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:iron_leggings",
+    "display_name": "Iron Leggings",
+    "quantity": 1,
+    "emerald_cost": 7,
+    "max_uses": 12,
+    "recipe": {
+      "iron_ingot": 7
+    }
+  },
+  {
+    "id": "armorer_novice_buy_iron_boots",
+    "profession": "armorer",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:iron_boots",
+    "display_name": "Iron Boots",
+    "quantity": 1,
+    "emerald_cost": 4,
+    "max_uses": 12,
+    "recipe": {
+      "iron_ingot": 4
+    }
+  },
+  {
+    "id": "armorer_apprentice_buy_bell",
+    "profession": "armorer",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:bell",
+    "display_name": "Bell",
+    "quantity": 1,
+    "emerald_cost": 36,
+    "max_uses": 12,
+    "recipe": {
+      "gold_ingot": 3,
+      "iron_ingot": 4
+    }
+  },
+  {
+    "id": "armorer_journeyman_buy_shield",
+    "profession": "armorer",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:shield",
+    "display_name": "Shield",
+    "quantity": 1,
+    "emerald_cost": 5,
+    "max_uses": 12,
+    "recipe": {
+      "iron_ingot": 1,
+      "planks": 6
+    }
+  },
+  {
+    "id": "butcher_novice_sell_chicken",
+    "profession": "butcher",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:chicken",
+    "display_name": "Raw Chicken",
+    "quantity": 14,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "chicken": 14
+    }
+  },
+  {
+    "id": "butcher_novice_sell_rabbit",
+    "profession": "butcher",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:rabbit",
+    "display_name": "Raw Rabbit",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "rabbit": 4
+    }
+  },
+  {
+    "id": "butcher_novice_sell_porkchop",
+    "profession": "butcher",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:porkchop",
+    "display_name": "Raw Porkchop",
+    "quantity": 7,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "porkchop": 7
+    }
+  },
+  {
+    "id": "butcher_novice_buy_rabbit_stew",
+    "profession": "butcher",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:rabbit_stew",
+    "display_name": "Rabbit Stew",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "cooked_rabbit": 1,
+      "carrot": 1,
+      "baked_potato": 1,
+      "bowl": 1
+    }
+  },
+  {
+    "id": "butcher_apprentice_sell_coal",
+    "profession": "butcher",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:coal",
+    "display_name": "Coal",
+    "quantity": 15,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "coal": 15
+    }
+  },
+  {
+    "id": "butcher_apprentice_buy_cooked_chicken",
+    "profession": "butcher",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:cooked_chicken",
+    "display_name": "Cooked Chicken",
+    "quantity": 8,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "chicken": 1,
+      "fuel": 1
+    }
+  },
+  {
+    "id": "butcher_apprentice_buy_cooked_porkchop",
+    "profession": "butcher",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:cooked_porkchop",
+    "display_name": "Cooked Porkchop",
+    "quantity": 5,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "porkchop": 1,
+      "fuel": 1
+    }
+  },
+  {
+    "id": "butcher_journeyman_sell_beef",
+    "profession": "butcher",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:beef",
+    "display_name": "Raw Beef",
+    "quantity": 10,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "beef": 10
+    }
+  },
+  {
+    "id": "butcher_journeyman_sell_mutton",
+    "profession": "butcher",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:mutton",
+    "display_name": "Raw Mutton",
+    "quantity": 7,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "mutton": 7
+    }
+  },
+  {
+    "id": "butcher_expert_sell_dried_kelp_block",
+    "profession": "butcher",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:dried_kelp_block",
+    "display_name": "Dried Kelp Block",
+    "quantity": 10,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "dried_kelp_block": 10
+    }
+  },
+  {
+    "id": "butcher_master_sell_sweet_berries",
+    "profession": "butcher",
+    "level": "master",
+    "direction": "sell",
+    "item_id": "minecraft:sweet_berries",
+    "display_name": "Sweet Berries",
+    "quantity": 10,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "sweet_berries": 10
+    }
+  },
+  {
+    "id": "cartographer_novice_sell_paper",
+    "profession": "cartographer",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:paper",
+    "display_name": "Paper",
+    "quantity": 24,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "paper": 24
+    }
+  },
+  {
+    "id": "cartographer_apprentice_sell_glass_pane",
+    "profession": "cartographer",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:glass_pane",
+    "display_name": "Glass Pane",
+    "quantity": 11,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "glass_pane": 11
+    }
+  },
+  {
+    "id": "cartographer_journeyman_sell_compass",
+    "profession": "cartographer",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:compass",
+    "display_name": "Compass",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "compass": 1
+    }
+  },
+  {
+    "id": "cartographer_expert_buy_item_frame",
+    "profession": "cartographer",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:item_frame",
+    "display_name": "Item Frame",
+    "quantity": 1,
+    "emerald_cost": 7,
+    "max_uses": 12,
+    "recipe": {
+      "stick": 8,
+      "leather": 1
+    }
+  },
+  {
+    "id": "cartographer_expert_buy_white_banner",
+    "profession": "cartographer",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:white_banner",
+    "display_name": "Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Color varies by biome",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "cleric_novice_sell_rotten_flesh",
+    "profession": "cleric",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:rotten_flesh",
+    "display_name": "Rotten Flesh",
+    "quantity": 32,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "rotten_flesh": 32
+    }
+  },
+  {
+    "id": "cleric_novice_buy_redstone",
+    "profession": "cleric",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:redstone",
+    "display_name": "Redstone Dust",
+    "quantity": 2,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "redstone": 1
+    }
+  },
+  {
+    "id": "cleric_apprentice_sell_gold_ingot",
+    "profession": "cleric",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:gold_ingot",
+    "display_name": "Gold Ingot",
+    "quantity": 3,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "gold_ingot": 3
+    }
+  },
+  {
+    "id": "cleric_apprentice_buy_lapis_lazuli",
+    "profession": "cleric",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:lapis_lazuli",
+    "display_name": "Lapis Lazuli",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "lapis_lazuli": 1
+    }
+  },
+  {
+    "id": "cleric_journeyman_sell_rabbit_foot",
+    "profession": "cleric",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:rabbit_foot",
+    "display_name": "Rabbit's Foot",
+    "quantity": 2,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "rabbit_foot": 2
+    }
+  },
+  {
+    "id": "cleric_journeyman_buy_glowstone",
+    "profession": "cleric",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:glowstone",
+    "display_name": "Glowstone",
+    "quantity": 1,
+    "emerald_cost": 4,
+    "max_uses": 12,
+    "recipe": {
+      "glowstone_dust": 4
+    }
+  },
+  {
+    "id": "cleric_expert_sell_turtle_scute",
+    "profession": "cleric",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:turtle_scute",
+    "display_name": "Turtle Scute",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "turtle_scute": 4
+    }
+  },
+  {
+    "id": "cleric_expert_sell_glass_bottle",
+    "profession": "cleric",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:glass_bottle",
+    "display_name": "Glass Bottle",
+    "quantity": 9,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "glass_bottle": 9
+    }
+  },
+  {
+    "id": "cleric_expert_buy_ender_pearl",
+    "profession": "cleric",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:ender_pearl",
+    "display_name": "Ender Pearl",
+    "quantity": 1,
+    "emerald_cost": 5,
+    "max_uses": 12,
+    "recipe": {
+      "ender_pearl": 1
+    }
+  },
+  {
+    "id": "cleric_master_sell_nether_wart",
+    "profession": "cleric",
+    "level": "master",
+    "direction": "sell",
+    "item_id": "minecraft:nether_wart",
+    "display_name": "Nether Wart",
+    "quantity": 22,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "nether_wart": 22
+    }
+  },
+  {
+    "id": "farmer_novice_sell_wheat",
+    "profession": "farmer",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:wheat",
+    "display_name": "Wheat",
+    "quantity": 20,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "wheat": 20
+    }
+  },
+  {
+    "id": "farmer_novice_sell_potato",
+    "profession": "farmer",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:potato",
+    "display_name": "Potato",
+    "quantity": 26,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "potato": 26
+    }
+  },
+  {
+    "id": "farmer_novice_sell_carrot",
+    "profession": "farmer",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:carrot",
+    "display_name": "Carrot",
+    "quantity": 22,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "carrot": 22
+    }
+  },
+  {
+    "id": "farmer_novice_sell_beetroot",
+    "profession": "farmer",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:beetroot",
+    "display_name": "Beetroot",
+    "quantity": 15,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "beetroot": 15
+    }
+  },
+  {
+    "id": "farmer_novice_buy_bread",
+    "profession": "farmer",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:bread",
+    "display_name": "Bread",
+    "quantity": 6,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "wheat": 3
+    }
+  },
+  {
+    "id": "farmer_apprentice_sell_pumpkin",
+    "profession": "farmer",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:pumpkin",
+    "display_name": "Pumpkin",
+    "quantity": 6,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "pumpkin": 6
+    }
+  },
+  {
+    "id": "farmer_apprentice_buy_pumpkin_pie",
+    "profession": "farmer",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:pumpkin_pie",
+    "display_name": "Pumpkin Pie",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "pumpkin": 1,
+      "egg": 1,
+      "sugar": 1
+    }
+  },
+  {
+    "id": "farmer_apprentice_buy_apple",
+    "profession": "farmer",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:apple",
+    "display_name": "Apple",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "apple": 1
+    }
+  },
+  {
+    "id": "farmer_journeyman_sell_melon",
+    "profession": "farmer",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:melon",
+    "display_name": "Melon",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "melon": 4
+    }
+  },
+  {
+    "id": "farmer_journeyman_buy_cookie",
+    "profession": "farmer",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:cookie",
+    "display_name": "Cookie",
+    "quantity": 18,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "recipe": {
+      "wheat": 2,
+      "cocoa_beans": 1
+    }
+  },
+  {
+    "id": "farmer_expert_buy_cake",
+    "profession": "farmer",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:cake",
+    "display_name": "Cake",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "milk_bucket": 3,
+      "sugar": 2,
+      "egg": 1,
+      "wheat": 3
+    }
+  },
+  {
+    "id": "farmer_master_buy_golden_carrot",
+    "profession": "farmer",
+    "level": "master",
+    "direction": "buy",
+    "item_id": "minecraft:golden_carrot",
+    "display_name": "Golden Carrot",
+    "quantity": 3,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "recipe": {
+      "gold_nugget": 8,
+      "carrot": 1
+    }
+  },
+  {
+    "id": "farmer_master_buy_glistering_melon_slice",
+    "profession": "farmer",
+    "level": "master",
+    "direction": "buy",
+    "item_id": "minecraft:glistering_melon_slice",
+    "display_name": "Glistering Melon Slice",
+    "quantity": 3,
+    "emerald_cost": 4,
+    "max_uses": 12,
+    "recipe": {
+      "gold_nugget": 8,
+      "melon_slice": 1
+    }
+  },
+  {
+    "id": "fisherman_novice_sell_string",
+    "profession": "fisherman",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:string",
+    "display_name": "String",
+    "quantity": 20,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "string": 20
+    }
+  },
+  {
+    "id": "fisherman_novice_sell_coal",
+    "profession": "fisherman",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:coal",
+    "display_name": "Coal",
+    "quantity": 10,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "coal": 10
+    }
+  },
+  {
+    "id": "fisherman_novice_buy_cod_bucket",
+    "profession": "fisherman",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:cod_bucket",
+    "display_name": "Bucket of Cod",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 16,
+    "recipe": {
+      "bucket": 1,
+      "cod": 1
+    }
+  },
+  {
+    "id": "fisherman_novice_buy_cooked_cod",
+    "profession": "fisherman",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:cooked_cod",
+    "display_name": "Cooked Cod",
+    "quantity": 6,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "extra_cost": {
+      "item_id": "minecraft:cod",
+      "quantity": 6
+    },
+    "notes": "Player also gives 6 raw cod",
+    "recipe": {
+      "cod": 1,
+      "fuel": 1
+    }
+  },
+  {
+    "id": "fisherman_apprentice_sell_cod",
+    "profession": "fisherman",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:cod",
+    "display_name": "Raw Cod",
+    "quantity": 15,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "cod": 15
+    }
+  },
+  {
+    "id": "fisherman_apprentice_buy_campfire",
+    "profession": "fisherman",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:campfire",
+    "display_name": "Campfire",
+    "quantity": 1,
+    "emerald_cost": 2,
+    "max_uses": 12,
+    "recipe": {
+      "coal": 3,
+      "stick": 3,
+      "log": 3
+    }
+  },
+  {
+    "id": "fisherman_apprentice_buy_cooked_salmon",
+    "profession": "fisherman",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:cooked_salmon",
+    "display_name": "Cooked Salmon",
+    "quantity": 6,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "extra_cost": {
+      "item_id": "minecraft:salmon",
+      "quantity": 6
+    },
+    "notes": "Player also gives 6 raw salmon",
+    "recipe": {
+      "salmon": 1,
+      "fuel": 1
+    }
+  },
+  {
+    "id": "fisherman_journeyman_sell_salmon",
+    "profession": "fisherman",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:salmon",
+    "display_name": "Raw Salmon",
+    "quantity": 13,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "salmon": 13
+    }
+  },
+  {
+    "id": "fisherman_expert_sell_tropical_fish",
+    "profession": "fisherman",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:tropical_fish",
+    "display_name": "Tropical Fish",
+    "quantity": 6,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "tropical_fish": 6
+    }
+  },
+  {
+    "id": "fisherman_master_sell_pufferfish",
+    "profession": "fisherman",
+    "level": "master",
+    "direction": "sell",
+    "item_id": "minecraft:pufferfish",
+    "display_name": "Pufferfish",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "pufferfish": 4
+    }
+  },
+  {
+    "id": "fisherman_master_sell_oak_boat",
+    "profession": "fisherman",
+    "level": "master",
+    "direction": "sell",
+    "item_id": "minecraft:oak_boat",
+    "display_name": "Oak Boat",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Boat wood type varies by biome",
+    "recipe": {
+      "oak_boat": 1
+    }
+  },
+  {
+    "id": "fisherman_master_sell_spruce_boat",
+    "profession": "fisherman",
+    "level": "master",
+    "direction": "sell",
+    "item_id": "minecraft:spruce_boat",
+    "display_name": "Spruce Boat",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Boat wood type varies by biome",
+    "recipe": {
+      "spruce_boat": 1
+    }
+  },
+  {
+    "id": "fisherman_master_sell_birch_boat",
+    "profession": "fisherman",
+    "level": "master",
+    "direction": "sell",
+    "item_id": "minecraft:birch_boat",
+    "display_name": "Birch Boat",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Boat wood type varies by biome",
+    "recipe": {
+      "birch_boat": 1
+    }
+  },
+  {
+    "id": "fisherman_master_sell_jungle_boat",
+    "profession": "fisherman",
+    "level": "master",
+    "direction": "sell",
+    "item_id": "minecraft:jungle_boat",
+    "display_name": "Jungle Boat",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Boat wood type varies by biome",
+    "recipe": {
+      "jungle_boat": 1
+    }
+  },
+  {
+    "id": "fisherman_master_sell_acacia_boat",
+    "profession": "fisherman",
+    "level": "master",
+    "direction": "sell",
+    "item_id": "minecraft:acacia_boat",
+    "display_name": "Acacia Boat",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Boat wood type varies by biome",
+    "recipe": {
+      "acacia_boat": 1
+    }
+  },
+  {
+    "id": "fisherman_master_sell_dark_oak_boat",
+    "profession": "fisherman",
+    "level": "master",
+    "direction": "sell",
+    "item_id": "minecraft:dark_oak_boat",
+    "display_name": "Dark Oak Boat",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Boat wood type varies by biome",
+    "recipe": {
+      "dark_oak_boat": 1
+    }
+  },
+  {
+    "id": "fisherman_master_sell_cherry_boat",
+    "profession": "fisherman",
+    "level": "master",
+    "direction": "sell",
+    "item_id": "minecraft:cherry_boat",
+    "display_name": "Cherry Boat",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Boat wood type varies by biome",
+    "recipe": {
+      "cherry_boat": 1
+    }
+  },
+  {
+    "id": "fletcher_novice_sell_stick",
+    "profession": "fletcher",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:stick",
+    "display_name": "Stick",
+    "quantity": 32,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "stick": 32
+    }
+  },
+  {
+    "id": "fletcher_novice_buy_arrow",
+    "profession": "fletcher",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:arrow",
+    "display_name": "Arrow",
+    "quantity": 16,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "flint": 1,
+      "stick": 1,
+      "feather": 1
+    }
+  },
+  {
+    "id": "fletcher_novice_buy_flint",
+    "profession": "fletcher",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:flint",
+    "display_name": "Flint",
+    "quantity": 10,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "extra_cost": {
+      "item_id": "minecraft:gravel",
+      "quantity": 10
+    },
+    "notes": "Player also gives 10 gravel",
+    "recipe": {
+      "gravel": 10
+    }
+  },
+  {
+    "id": "fletcher_apprentice_sell_flint",
+    "profession": "fletcher",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:flint",
+    "display_name": "Flint",
+    "quantity": 26,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "flint": 26
+    }
+  },
+  {
+    "id": "fletcher_apprentice_buy_bow",
+    "profession": "fletcher",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:bow",
+    "display_name": "Bow",
+    "quantity": 1,
+    "emerald_cost": 2,
+    "max_uses": 12,
+    "recipe": {
+      "stick": 3,
+      "string": 3
+    }
+  },
+  {
+    "id": "fletcher_journeyman_sell_string",
+    "profession": "fletcher",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:string",
+    "display_name": "String",
+    "quantity": 14,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "string": 14
+    }
+  },
+  {
+    "id": "fletcher_journeyman_buy_crossbow",
+    "profession": "fletcher",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:crossbow",
+    "display_name": "Crossbow",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "recipe": {
+      "stick": 3,
+      "string": 2,
+      "iron_ingot": 1,
+      "tripwire_hook": 1
+    }
+  },
+  {
+    "id": "fletcher_expert_sell_feather",
+    "profession": "fletcher",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:feather",
+    "display_name": "Feather",
+    "quantity": 24,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "feather": 24
+    }
+  },
+  {
+    "id": "fletcher_master_sell_tripwire_hook",
+    "profession": "fletcher",
+    "level": "master",
+    "direction": "sell",
+    "item_id": "minecraft:tripwire_hook",
+    "display_name": "Tripwire Hook",
+    "quantity": 8,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "tripwire_hook": 8
+    }
+  },
+  {
+    "id": "leatherworker_novice_sell_leather",
+    "profession": "leatherworker",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:leather",
+    "display_name": "Leather",
+    "quantity": 6,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "leather": 6
+    }
+  },
+  {
+    "id": "leatherworker_apprentice_sell_flint",
+    "profession": "leatherworker",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:flint",
+    "display_name": "Flint",
+    "quantity": 26,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "flint": 26
+    }
+  },
+  {
+    "id": "leatherworker_journeyman_sell_rabbit_hide",
+    "profession": "leatherworker",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:rabbit_hide",
+    "display_name": "Rabbit Hide",
+    "quantity": 9,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "rabbit_hide": 9
+    }
+  },
+  {
+    "id": "leatherworker_expert_sell_turtle_scute",
+    "profession": "leatherworker",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:turtle_scute",
+    "display_name": "Turtle Scute",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "turtle_scute": 4
+    }
+  },
+  {
+    "id": "librarian_novice_sell_paper",
+    "profession": "librarian",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:paper",
+    "display_name": "Paper",
+    "quantity": 24,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "paper": 24
+    }
+  },
+  {
+    "id": "librarian_novice_buy_bookshelf",
+    "profession": "librarian",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:bookshelf",
+    "display_name": "Bookshelf",
+    "quantity": 1,
+    "emerald_cost": 9,
+    "max_uses": 12,
+    "recipe": {
+      "planks": 6,
+      "book": 3
+    }
+  },
+  {
+    "id": "librarian_apprentice_sell_book",
+    "profession": "librarian",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:book",
+    "display_name": "Book",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "book": 4
+    }
+  },
+  {
+    "id": "librarian_apprentice_buy_lantern",
+    "profession": "librarian",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:lantern",
+    "display_name": "Lantern",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "iron_nugget": 8,
+      "torch": 1
+    }
+  },
+  {
+    "id": "librarian_journeyman_sell_ink_sac",
+    "profession": "librarian",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:ink_sac",
+    "display_name": "Ink Sac",
+    "quantity": 5,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "ink_sac": 5
+    }
+  },
+  {
+    "id": "librarian_journeyman_buy_glass",
+    "profession": "librarian",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:glass",
+    "display_name": "Glass",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "glass_block": 1
+    }
+  },
+  {
+    "id": "librarian_expert_sell_writable_book",
+    "profession": "librarian",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:writable_book",
+    "display_name": "Book and Quill",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Java: 1 book and quill per trade (MC-248042)",
+    "recipe": {
+      "writable_book": 1
+    }
+  },
+  {
+    "id": "librarian_expert_buy_compass",
+    "profession": "librarian",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:compass",
+    "display_name": "Compass",
+    "quantity": 1,
+    "emerald_cost": 4,
+    "max_uses": 12,
+    "recipe": {
+      "iron_ingot": 4,
+      "redstone": 1
+    }
+  },
+  {
+    "id": "librarian_expert_buy_clock",
+    "profession": "librarian",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:clock",
+    "display_name": "Clock",
+    "quantity": 1,
+    "emerald_cost": 5,
+    "max_uses": 12,
+    "recipe": {
+      "gold_ingot": 4,
+      "redstone": 1
+    }
+  },
+  {
+    "id": "librarian_master_buy_red_candle",
+    "profession": "librarian",
+    "level": "master",
+    "direction": "buy",
+    "item_id": "minecraft:red_candle",
+    "display_name": "Red Candle",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "26.x master trade (replaces name tag)",
+    "recipe": {
+      "candle": 1,
+      "red_dye": 1
+    }
+  },
+  {
+    "id": "librarian_master_buy_yellow_candle",
+    "profession": "librarian",
+    "level": "master",
+    "direction": "buy",
+    "item_id": "minecraft:yellow_candle",
+    "display_name": "Yellow Candle",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "26.x master trade (replaces name tag)",
+    "recipe": {
+      "candle": 1,
+      "yellow_dye": 1
+    }
+  },
+  {
+    "id": "mason_novice_sell_clay_ball",
+    "profession": "mason",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:clay_ball",
+    "display_name": "Clay Ball",
+    "quantity": 10,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "clay_ball": 10
+    }
+  },
+  {
+    "id": "mason_novice_buy_brick",
+    "profession": "mason",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:brick",
+    "display_name": "Brick",
+    "quantity": 10,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "clay_ball": 1
+    }
+  },
+  {
+    "id": "mason_apprentice_sell_stone",
+    "profession": "mason",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:stone",
+    "display_name": "Stone",
+    "quantity": 20,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "stone": 20
+    }
+  },
+  {
+    "id": "mason_apprentice_buy_chiseled_stone_bricks",
+    "profession": "mason",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:chiseled_stone_bricks",
+    "display_name": "Chiseled Stone Bricks",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "stone_bricks": 1
+    }
+  },
+  {
+    "id": "mason_journeyman_sell_granite",
+    "profession": "mason",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:granite",
+    "display_name": "Granite",
+    "quantity": 16,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "granite": 16
+    }
+  },
+  {
+    "id": "mason_journeyman_sell_andesite",
+    "profession": "mason",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:andesite",
+    "display_name": "Andesite",
+    "quantity": 16,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "andesite": 16
+    }
+  },
+  {
+    "id": "mason_journeyman_sell_diorite",
+    "profession": "mason",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:diorite",
+    "display_name": "Diorite",
+    "quantity": 16,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "diorite": 16
+    }
+  },
+  {
+    "id": "mason_journeyman_buy_dripstone_block",
+    "profession": "mason",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:dripstone_block",
+    "display_name": "Dripstone Block",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "pointed_dripstone": 4
+    }
+  },
+  {
+    "id": "mason_journeyman_buy_polished_andesite",
+    "profession": "mason",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:polished_andesite",
+    "display_name": "Polished Andesite",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "andesite": 4
+    }
+  },
+  {
+    "id": "mason_journeyman_buy_polished_diorite",
+    "profession": "mason",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:polished_diorite",
+    "display_name": "Polished Diorite",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "diorite": 4
+    }
+  },
+  {
+    "id": "mason_journeyman_buy_polished_granite",
+    "profession": "mason",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:polished_granite",
+    "display_name": "Polished Granite",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "granite": 4
+    }
+  },
+  {
+    "id": "mason_expert_sell_quartz",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:quartz",
+    "display_name": "Nether Quartz",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "quartz": 12
+    }
+  },
+  {
+    "id": "mason_expert_buy_white_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:white_terracotta",
+    "display_name": "White Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_white_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:white_glazed_terracotta",
+    "display_name": "White Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_orange_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:orange_terracotta",
+    "display_name": "Orange Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_orange_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:orange_glazed_terracotta",
+    "display_name": "Orange Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_magenta_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:magenta_terracotta",
+    "display_name": "Magenta Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_magenta_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:magenta_glazed_terracotta",
+    "display_name": "Magenta Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_light_blue_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:light_blue_terracotta",
+    "display_name": "Light Blue Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_light_blue_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:light_blue_glazed_terracotta",
+    "display_name": "Light Blue Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_yellow_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:yellow_terracotta",
+    "display_name": "Yellow Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_yellow_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:yellow_glazed_terracotta",
+    "display_name": "Yellow Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_lime_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:lime_terracotta",
+    "display_name": "Lime Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_lime_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:lime_glazed_terracotta",
+    "display_name": "Lime Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_pink_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:pink_terracotta",
+    "display_name": "Pink Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_pink_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:pink_glazed_terracotta",
+    "display_name": "Pink Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_gray_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:gray_terracotta",
+    "display_name": "Gray Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_gray_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:gray_glazed_terracotta",
+    "display_name": "Gray Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_light_gray_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:light_gray_terracotta",
+    "display_name": "Light Gray Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_light_gray_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:light_gray_glazed_terracotta",
+    "display_name": "Light Gray Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_cyan_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:cyan_terracotta",
+    "display_name": "Cyan Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_cyan_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:cyan_glazed_terracotta",
+    "display_name": "Cyan Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_purple_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:purple_terracotta",
+    "display_name": "Purple Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_purple_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:purple_glazed_terracotta",
+    "display_name": "Purple Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_blue_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:blue_terracotta",
+    "display_name": "Blue Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_blue_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:blue_glazed_terracotta",
+    "display_name": "Blue Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_brown_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:brown_terracotta",
+    "display_name": "Brown Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_brown_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:brown_glazed_terracotta",
+    "display_name": "Brown Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_green_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:green_terracotta",
+    "display_name": "Green Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_green_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:green_glazed_terracotta",
+    "display_name": "Green Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_red_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:red_terracotta",
+    "display_name": "Red Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_red_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:red_glazed_terracotta",
+    "display_name": "Red Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_black_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:black_terracotta",
+    "display_name": "Black Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_expert_buy_black_glazed_terracotta",
+    "profession": "mason",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:black_glazed_terracotta",
+    "display_name": "Black Glazed Terracotta",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "notes": "Each color is a separate offer pool entry",
+    "recipe": {
+      "clay_ball": 4
+    }
+  },
+  {
+    "id": "mason_master_buy_quartz_pillar",
+    "profession": "mason",
+    "level": "master",
+    "direction": "buy",
+    "item_id": "minecraft:quartz_pillar",
+    "display_name": "Quartz Pillar",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "quartz_block": 1
+    }
+  },
+  {
+    "id": "mason_master_buy_quartz_block",
+    "profession": "mason",
+    "level": "master",
+    "direction": "buy",
+    "item_id": "minecraft:quartz_block",
+    "display_name": "Block of Quartz",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "quartz": 4
+    }
+  },
+  {
+    "id": "shepherd_novice_sell_white_wool",
+    "profession": "shepherd",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:white_wool",
+    "display_name": "White Wool",
+    "quantity": 18,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "wool": 18
+    }
+  },
+  {
+    "id": "shepherd_novice_sell_brown_wool",
+    "profession": "shepherd",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:brown_wool",
+    "display_name": "Brown Wool",
+    "quantity": 18,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "wool": 18
+    }
+  },
+  {
+    "id": "shepherd_novice_sell_black_wool",
+    "profession": "shepherd",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:black_wool",
+    "display_name": "Black Wool",
+    "quantity": 18,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "wool": 18
+    }
+  },
+  {
+    "id": "shepherd_novice_sell_gray_wool",
+    "profession": "shepherd",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:gray_wool",
+    "display_name": "Gray Wool",
+    "quantity": 18,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "wool": 18
+    }
+  },
+  {
+    "id": "shepherd_novice_buy_shears",
+    "profession": "shepherd",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:shears",
+    "display_name": "Shears",
+    "quantity": 1,
+    "emerald_cost": 2,
+    "max_uses": 12,
+    "recipe": {
+      "iron_ingot": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_sell_white_dye",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:white_dye",
+    "display_name": "White Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "white_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_apprentice_sell_gray_dye",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:gray_dye",
+    "display_name": "Gray Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "gray_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_apprentice_sell_black_dye",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:black_dye",
+    "display_name": "Black Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "black_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_apprentice_sell_light_blue_dye",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:light_blue_dye",
+    "display_name": "Light Blue Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "light_blue_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_apprentice_sell_lime_dye",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:lime_dye",
+    "display_name": "Lime Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "lime_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_journeyman_sell_yellow_dye",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:yellow_dye",
+    "display_name": "Yellow Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "yellow_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_journeyman_sell_light_gray_dye",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:light_gray_dye",
+    "display_name": "Light Gray Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "light_gray_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_journeyman_sell_orange_dye",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:orange_dye",
+    "display_name": "Orange Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "orange_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_journeyman_sell_red_dye",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:red_dye",
+    "display_name": "Red Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "red_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_journeyman_sell_pink_dye",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:pink_dye",
+    "display_name": "Pink Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "pink_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_expert_sell_brown_dye",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:brown_dye",
+    "display_name": "Brown Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "brown_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_expert_sell_purple_dye",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:purple_dye",
+    "display_name": "Purple Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "purple_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_expert_sell_blue_dye",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:blue_dye",
+    "display_name": "Blue Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "blue_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_expert_sell_green_dye",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:green_dye",
+    "display_name": "Green Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "green_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_expert_sell_magenta_dye",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:magenta_dye",
+    "display_name": "Magenta Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "magenta_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_expert_sell_cyan_dye",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:cyan_dye",
+    "display_name": "Cyan Dye",
+    "quantity": 12,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "cyan_dye": 12
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_white_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:white_wool",
+    "display_name": "White Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_white_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:white_carpet",
+    "display_name": "White Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_orange_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:orange_wool",
+    "display_name": "Orange Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_orange_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:orange_carpet",
+    "display_name": "Orange Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_magenta_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:magenta_wool",
+    "display_name": "Magenta Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_magenta_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:magenta_carpet",
+    "display_name": "Magenta Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_light_blue_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:light_blue_wool",
+    "display_name": "Light Blue Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_light_blue_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:light_blue_carpet",
+    "display_name": "Light Blue Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_yellow_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:yellow_wool",
+    "display_name": "Yellow Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_yellow_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:yellow_carpet",
+    "display_name": "Yellow Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_lime_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:lime_wool",
+    "display_name": "Lime Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_lime_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:lime_carpet",
+    "display_name": "Lime Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_pink_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:pink_wool",
+    "display_name": "Pink Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_pink_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:pink_carpet",
+    "display_name": "Pink Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_gray_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:gray_wool",
+    "display_name": "Gray Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_gray_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:gray_carpet",
+    "display_name": "Gray Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_light_gray_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:light_gray_wool",
+    "display_name": "Light Gray Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_light_gray_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:light_gray_carpet",
+    "display_name": "Light Gray Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_cyan_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:cyan_wool",
+    "display_name": "Cyan Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_cyan_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:cyan_carpet",
+    "display_name": "Cyan Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_purple_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:purple_wool",
+    "display_name": "Purple Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_purple_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:purple_carpet",
+    "display_name": "Purple Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_blue_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:blue_wool",
+    "display_name": "Blue Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_blue_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:blue_carpet",
+    "display_name": "Blue Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_brown_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:brown_wool",
+    "display_name": "Brown Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_brown_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:brown_carpet",
+    "display_name": "Brown Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_green_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:green_wool",
+    "display_name": "Green Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_green_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:green_carpet",
+    "display_name": "Green Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_red_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:red_wool",
+    "display_name": "Red Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_red_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:red_carpet",
+    "display_name": "Red Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_black_wool",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:black_wool",
+    "display_name": "Black Wool",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color wool offer",
+    "recipe": {
+      "wool": 1
+    }
+  },
+  {
+    "id": "shepherd_apprentice_buy_black_carpet",
+    "profession": "shepherd",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:black_carpet",
+    "display_name": "Black Carpet",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "notes": "Any color carpet offer",
+    "recipe": {
+      "wool": 2
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_white_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:white_bed",
+    "display_name": "White Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_orange_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:orange_bed",
+    "display_name": "Orange Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_magenta_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:magenta_bed",
+    "display_name": "Magenta Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_light_blue_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:light_blue_bed",
+    "display_name": "Light Blue Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_yellow_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:yellow_bed",
+    "display_name": "Yellow Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_lime_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:lime_bed",
+    "display_name": "Lime Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_pink_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:pink_bed",
+    "display_name": "Pink Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_gray_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:gray_bed",
+    "display_name": "Gray Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_light_gray_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:light_gray_bed",
+    "display_name": "Light Gray Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_cyan_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:cyan_bed",
+    "display_name": "Cyan Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_purple_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:purple_bed",
+    "display_name": "Purple Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_blue_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:blue_bed",
+    "display_name": "Blue Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_brown_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:brown_bed",
+    "display_name": "Brown Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_green_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:green_bed",
+    "display_name": "Green Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_red_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:red_bed",
+    "display_name": "Red Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_journeyman_buy_black_bed",
+    "profession": "shepherd",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:black_bed",
+    "display_name": "Black Bed",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color bed offer",
+    "recipe": {
+      "wool": 3,
+      "planks": 3
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_white_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:white_banner",
+    "display_name": "White Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_orange_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:orange_banner",
+    "display_name": "Orange Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_magenta_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:magenta_banner",
+    "display_name": "Magenta Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_light_blue_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:light_blue_banner",
+    "display_name": "Light Blue Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_yellow_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:yellow_banner",
+    "display_name": "Yellow Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_lime_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:lime_banner",
+    "display_name": "Lime Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_pink_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:pink_banner",
+    "display_name": "Pink Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_gray_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:gray_banner",
+    "display_name": "Gray Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_light_gray_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:light_gray_banner",
+    "display_name": "Light Gray Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_cyan_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:cyan_banner",
+    "display_name": "Cyan Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_purple_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:purple_banner",
+    "display_name": "Purple Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_blue_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:blue_banner",
+    "display_name": "Blue Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_brown_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:brown_banner",
+    "display_name": "Brown Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_green_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:green_banner",
+    "display_name": "Green Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_red_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:red_banner",
+    "display_name": "Red Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_expert_buy_black_banner",
+    "profession": "shepherd",
+    "level": "expert",
+    "direction": "buy",
+    "item_id": "minecraft:black_banner",
+    "display_name": "Black Banner",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "notes": "Any color banner offer",
+    "recipe": {
+      "wool": 6,
+      "stick": 1
+    }
+  },
+  {
+    "id": "shepherd_master_buy_painting",
+    "profession": "shepherd",
+    "level": "master",
+    "direction": "buy",
+    "item_id": "minecraft:painting",
+    "display_name": "Painting",
+    "quantity": 3,
+    "emerald_cost": 2,
+    "max_uses": 12,
+    "recipe": {
+      "stick": 8,
+      "wool": 1
+    }
+  },
+  {
+    "id": "toolsmith_novice_sell_coal",
+    "profession": "toolsmith",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:coal",
+    "display_name": "Coal",
+    "quantity": 15,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "coal": 15
+    }
+  },
+  {
+    "id": "toolsmith_novice_buy_stone_axe",
+    "profession": "toolsmith",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:stone_axe",
+    "display_name": "Stone Axe",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "cobblestone": 3,
+      "stick": 2
+    }
+  },
+  {
+    "id": "toolsmith_novice_buy_stone_shovel",
+    "profession": "toolsmith",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:stone_shovel",
+    "display_name": "Stone Shovel",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "cobblestone": 1,
+      "stick": 2
+    }
+  },
+  {
+    "id": "toolsmith_novice_buy_stone_pickaxe",
+    "profession": "toolsmith",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:stone_pickaxe",
+    "display_name": "Stone Pickaxe",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "cobblestone": 3,
+      "stick": 2
+    }
+  },
+  {
+    "id": "toolsmith_novice_buy_stone_hoe",
+    "profession": "toolsmith",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:stone_hoe",
+    "display_name": "Stone Hoe",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "cobblestone": 2,
+      "stick": 2
+    }
+  },
+  {
+    "id": "toolsmith_apprentice_sell_iron_ingot",
+    "profession": "toolsmith",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:iron_ingot",
+    "display_name": "Iron Ingot",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "iron_ingot": 4
+    }
+  },
+  {
+    "id": "toolsmith_apprentice_buy_bell",
+    "profession": "toolsmith",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:bell",
+    "display_name": "Bell",
+    "quantity": 1,
+    "emerald_cost": 36,
+    "max_uses": 12,
+    "recipe": {
+      "gold_ingot": 3,
+      "iron_ingot": 4
+    }
+  },
+  {
+    "id": "toolsmith_journeyman_sell_flint",
+    "profession": "toolsmith",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:flint",
+    "display_name": "Flint",
+    "quantity": 30,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "flint": 30
+    }
+  },
+  {
+    "id": "toolsmith_journeyman_buy_diamond_hoe",
+    "profession": "toolsmith",
+    "level": "journeyman",
+    "direction": "buy",
+    "item_id": "minecraft:diamond_hoe",
+    "display_name": "Diamond Hoe",
+    "quantity": 1,
+    "emerald_cost": 4,
+    "max_uses": 3,
+    "recipe": {
+      "diamond": 2,
+      "stick": 2
+    }
+  },
+  {
+    "id": "toolsmith_expert_sell_diamond",
+    "profession": "toolsmith",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:diamond",
+    "display_name": "Diamond",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "diamond": 1
+    }
+  },
+  {
+    "id": "weaponsmith_novice_sell_coal",
+    "profession": "weaponsmith",
+    "level": "novice",
+    "direction": "sell",
+    "item_id": "minecraft:coal",
+    "display_name": "Coal",
+    "quantity": 15,
+    "emerald_cost": 1,
+    "max_uses": 16,
+    "recipe": {
+      "coal": 15
+    }
+  },
+  {
+    "id": "weaponsmith_novice_buy_iron_axe",
+    "profession": "weaponsmith",
+    "level": "novice",
+    "direction": "buy",
+    "item_id": "minecraft:iron_axe",
+    "display_name": "Iron Axe",
+    "quantity": 1,
+    "emerald_cost": 3,
+    "max_uses": 12,
+    "recipe": {
+      "iron_ingot": 3,
+      "stick": 2
+    }
+  },
+  {
+    "id": "weaponsmith_apprentice_sell_iron_ingot",
+    "profession": "weaponsmith",
+    "level": "apprentice",
+    "direction": "sell",
+    "item_id": "minecraft:iron_ingot",
+    "display_name": "Iron Ingot",
+    "quantity": 4,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "iron_ingot": 4
+    }
+  },
+  {
+    "id": "weaponsmith_apprentice_buy_bell",
+    "profession": "weaponsmith",
+    "level": "apprentice",
+    "direction": "buy",
+    "item_id": "minecraft:bell",
+    "display_name": "Bell",
+    "quantity": 1,
+    "emerald_cost": 36,
+    "max_uses": 12,
+    "recipe": {
+      "gold_ingot": 3,
+      "iron_ingot": 4
+    }
+  },
+  {
+    "id": "weaponsmith_journeyman_sell_flint",
+    "profession": "weaponsmith",
+    "level": "journeyman",
+    "direction": "sell",
+    "item_id": "minecraft:flint",
+    "display_name": "Flint",
+    "quantity": 24,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "flint": 24
+    }
+  },
+  {
+    "id": "weaponsmith_expert_sell_diamond",
+    "profession": "weaponsmith",
+    "level": "expert",
+    "direction": "sell",
+    "item_id": "minecraft:diamond",
+    "display_name": "Diamond",
+    "quantity": 1,
+    "emerald_cost": 1,
+    "max_uses": 12,
+    "recipe": {
+      "diamond": 1
+    }
+  }
+];
+const TRADE_META = {
+  "version": "2.1-derivatives",
+  "trade_count": 238,
+  "gather_test_count": 57,
+  "derived_count": 43,
+  "excluded": "non-craftable buy, enchanted, maps, saddle, pearls, chainmail"
+};

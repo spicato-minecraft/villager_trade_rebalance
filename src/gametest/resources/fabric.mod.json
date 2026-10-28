@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"id": "villager_trade_rebalance_test",
+	"version": "${version}",
+	"name": "Villager Trade Rebalance Game Tests",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-gametest": [
+			"villager_trade_rebalance.gametest.ModLoadsGameTest",
+			"villager_trade_rebalance.gametest.LibrarianNoviceBookGameTest",
+			"villager_trade_rebalance.gametest.ServerMixinApplySweepGameTest",
+			"villager_trade_rebalance.gametest.LibrarianLineageLevelUpGameTest",
+			"villager_trade_rebalance.gametest.MaxedLineageSkipsExtraBookGameTest",
+			"villager_trade_rebalance.gametest.GrandfatherVanillaBooksGameTest",
+			"villager_trade_rebalance.gametest.NewRuleStatePersistsGameTest",
+			"villager_trade_rebalance.gametest.NonBookLibrarianRowsGameTest",
+			"villager_trade_rebalance.gametest.ConfigDisabledLeavesVanillaGameTest",
+			"villager_trade_rebalance.gametest.NonLibrarianNotRewrittenGameTest",
+			"villager_trade_rebalance.gametest.LibrarianOfferRewriteGameTest"
+		]
+	},
+	"depends": {
+		"villager_trade_rebalance": "*",
+		"fabric-api": "*",
+		"minecraft": "~26.2"
+	}
+}

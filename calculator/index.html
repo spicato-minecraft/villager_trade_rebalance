@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Village ledger lab</title>
+  <style>
+    :root {
+      --bg: #1a1a2e;
+      --surface: #16213e;
+      --surface-hover: #1f3460;
+      --text: #e8e8e8;
+      --text-muted: #a0a0a0;
+      --accent: #0f3460;
+      --accent-bright: #7eb8da;
+      --border: #2a2a4a;
+      --input-bg: #0d1b2a;
+      --sell: #6ecf8a;
+      --buy: #e8a87c;
+      --success: #6ecf8a;
+      --warn: #e8c87c;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0.75rem 1rem 0.5rem;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1 { margin: 0 0 0.15rem; font-size: 1.35rem; font-weight: 600; }
+
+    .app-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      flex: 0 0 auto;
+      margin-bottom: 0.65rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin: 0;
+      max-width: 48rem;
+    }
+
+    .secondary-menu {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      min-width: 11rem;
+    }
+
+    .secondary-menu select {
+      padding: 0.4rem 0.55rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+
+    .workspace {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+      --split-left: 48%;
+    }
+
+    .workspace.hidden { display: none; }
+
+    .pane {
+      min-width: 16rem;
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pane-ledger {
+      flex: 0 0 var(--split-left);
+      width: var(--split-left);
+    }
+
+    .pane-config { flex: 1 1 auto; }
+
+    .split-handle {
+      flex: 0 0 8px;
+      margin: 0 0.15rem;
+      border-radius: 4px;
+      background: var(--border);
+      cursor: col-resize;
+      align-self: stretch;
+    }
+
+    .split-handle:hover,
+    body.dragging-split .split-handle {
+      background: var(--accent-bright);
+    }
+
+    body.dragging-split { cursor: col-resize; user-select: none; }
+
+    .pane-ledger .table-wrap { flex: 1; min-height: 0; overflow: auto; }
+
+    .config-tabs {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.65rem;
+      flex: 0 0 auto;
+    }
+
+    .config-panel { display: none; }
+    .pane-config .config-panel.active {
+      display: block;
+      flex: 1 1 auto;
+      overflow: auto;
+      min-height: 0;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tab {
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: var(--text);
+      border-color: var(--accent-bright);
+    }
+
+    .panel { display: none; flex: 1; min-height: 0; overflow: auto; }
+    .panel.active { display: block; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .toolbar label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .toolbar select,
+    .toolbar input[type="search"] {
+      padding: 0.4rem 0.6rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 0.9rem;
+      min-width: 140px;
+    }
+
+    .toolbar input[type="search"] { min-width: 200px; }
+
+    .toolbar select:focus,
+    .toolbar input:focus {
+      outline: none;
+      border-color: var(--accent-bright);
+    }
+
+    .btn {
+      padding: 0.45rem 0.85rem;
+      background: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .btn.dir-toggle { min-width: 5.5rem; }
+    .btn.dir-toggle.dir-buy { color: var(--buy); border-color: #8b5a3c; }
+    .btn.dir-toggle.dir-sell { color: var(--sell); border-color: #3a6b4a; }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .stats strong { color: var(--accent-bright); }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    th, td {
+      padding: 0.45rem 0.5rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--input-bg);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 0.7rem;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      white-space: nowrap;
+    }
+
+    tr:hover td { background: var(--surface-hover); }
+
+    .dir-sell { color: var(--sell); font-weight: 600; }
+    .dir-buy { color: var(--buy); font-weight: 600; }
+
+    .item-name { font-weight: 600; white-space: nowrap; }
+    .item-id { font-size: 0.7rem; color: var(--text-muted); }
+    .recipe-breakdown { font-size: 0.72rem; color: var(--text-muted); max-width: 14rem; }
+
+    td input[type="text"],
+    td input[type="number"],
+    td textarea {
+      width: 100%;
+      min-width: 60px;
+      padding: 0.3rem 0.4rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text);
+      font-size: 0.78rem;
+      font-family: inherit;
+    }
+
+    td input[type="number"] { max-width: 72px; }
+    #town-pop-grid td.town-n,
+    #config-town th.town-n {
+      width: 4.5rem;
+      text-align: right;
+    }
+    #town-pop-grid td.town-n input {
+      max-width: 4.5rem;
+      text-align: right;
+      margin-left: auto;
+      display: block;
+    }
+    td input.t-avg, td input.min-unit { background: #1a2744; color: var(--accent-bright); font-weight: 600; }
+    td input[readonly] { cursor: default; }
+    td textarea { min-width: 100px; min-height: 2.2rem; resize: vertical; }
+
+    .t-run-cell { min-width: 108px; }
+    .run-timer {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-top: 0.3rem;
+    }
+    .run-timer-display {
+      flex: 1;
+      font-family: ui-monospace, monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      min-width: 3.5rem;
+    }
+    .run-timer-display.active { color: var(--accent-bright); font-weight: 600; }
+    .run-timer-display.paused { color: var(--warn); }
+    .btn-timer {
+      padding: 0.15rem 0.35rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      cursor: pointer;
+    }
+    .btn-timer:hover:not(:disabled) { background: var(--surface-hover); color: var(--text); }
+    .btn-timer:disabled { opacity: 0.35; cursor: default; }
+    .btn-timer.btn-start:not(:disabled) { color: var(--success); border-color: #3a6b4a; }
+    .btn-timer.btn-stop:not(:disabled) { color: #e8a87c; border-color: #8b5a3c; }
+    .btn-timer.btn-pause:not(:disabled) { color: var(--warn); border-color: #8b7a3c; }
+    .btn-timer.btn-pause.btn-resume:not(:disabled) { color: var(--success); border-color: #3a6b4a; }
+
+    .vanilla-meta { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
+    .fair-price { font-weight: 600; color: var(--accent-bright); }
+    .delta-high { color: var(--warn); }
+    .delta-ok { color: var(--success); }
+    .missing-data { color: #e88; font-style: italic; }
+    .has-t-data td:first-child { box-shadow: inset 3px 0 0 var(--success); }
+    .empty-msg { padding: 2rem; text-align: center; color: var(--text-muted); }
+    .save-status { font-size: 0.75rem; color: var(--text-muted); margin-left: auto; }
+    .save-status.saved { color: var(--success); }
+    .save-status.pending { color: var(--accent-bright); }
+    .save-status.error { color: #e88; }
+
+    .category-pill {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      background: var(--input-bg);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+    .derived-row td { background: #141e32; }
+    .derived-formula {
+      font-size: 0.72rem;
+      color: var(--accent-bright);
+      line-height: 1.35;
+    }
+    .derived-badge {
+      display: inline-block;
+      margin-top: 0.2rem;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      background: #1a2744;
+      color: var(--warn);
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .derived-badge.mob-hunt { color: #e8a87c; }
+    .unlocks-list { font-size: 0.68rem; color: var(--text-muted); max-width: 14rem; line-height: 1.35; }
+    .unlocks-list strong { color: var(--accent-bright); }
+    .base-inputs { font-size: 0.72rem; color: var(--text-muted); }
+    .lab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .lab-grid label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .lab-grid input, .toolbar input[type="number"] {
+      padding: 0.35rem 0.5rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 0.85rem;
+    }
+    .preset-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .scen-log {
+      white-space: pre-wrap;
+      font-family: ui-monospace, monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem;
+      min-height: 6rem;
+      max-height: 14rem;
+      overflow: auto;
+    }
+    .ref-note {
+      font-size: 0.8rem;
+      color: var(--warn);
+      margin: 0 0 0.75rem;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+    .item-search-wrap { flex: 1 1 22rem; min-width: 16rem; }
+    .item-search-results {
+      margin: 0.5rem 0 0;
+      max-height: 14rem;
+      overflow: auto;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .item-search-results button {
+      display: flex;
+      width: 100%;
+      text-align: left;
+      gap: 0.75rem;
+      align-items: baseline;
+      padding: 0.4rem 0.65rem;
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .item-search-results button:last-child { border-bottom: 0; }
+    .item-search-results button:hover { background: var(--surface-hover); }
+    .item-search-results button.in-pool { opacity: 0.45; cursor: default; }
+    .item-search-results .item-id { font-family: ui-monospace, monospace; font-size: 0.72rem; color: var(--text-muted); }
+    .item-search-hint { padding: 0.65rem; font-size: 0.8rem; color: var(--text-muted); }
+    .formula-text { font-size: 0.75rem; color: var(--warn); }
+    .risk-input {
+      width: 3.2rem;
+      padding: 0.1rem 0.25rem;
+      margin: 0 0.15rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: #e8a87c;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>Village ledger lab</h1>
+      <p class="subtitle">
+        Ledger and town/profession configs stay side by side. Drag the divider to resize.
+        Scenario, invariants, and gather-time tools are in the secondary menu.
+      </p>
+    </div>
+    <label class="secondary-menu">More
+      <select id="view-select">
+        <option value="lab">Lab</option>
+        <option value="scenario">Scenario</option>
+        <option value="invariants">Invariants</option>
+        <option value="materials">Gather tests</option>
+        <option value="derivatives">Derivatives</option>
+        <option value="trades">Fair trades</option>
+      </select>
+    </label>
+  </header>
+
+  <div id="workspace" class="workspace">
+    <section id="panel-ledger" class="pane pane-ledger">
+      <div class="toolbar">
+        <label>Search<input type="search" id="ledger-search" placeholder="Commodity or profession…"></label>
+        <span class="save-status" id="lab-save-status"></span>
+      </div>
+      <div class="stats" id="ledger-stats"></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Commodity</th>
+              <th>Cap</th>
+              <th>Mid</th>
+              <th>Stock</th>
+              <th>Idle dump</th>
+              <th>Idle shop</th>
+              <th>P</th>
+              <th>C</th>
+              <th>Restock drain</th>
+              <th>Restock fill</th>
+              <th>Days digest / refill</th>
+              <th>Contributors</th>
+            </tr>
+          </thead>
+          <tbody id="ledger-body"></tbody>
+        </table>
+      </div>
+    </section>
+    <div id="split-handle" class="split-handle" role="separator" aria-orientation="vertical" title="Drag to resize"></div>
+    <section class="pane pane-config">
+      <div class="config-tabs">
+        <button type="button" class="tab active" data-config="town">Town</button>
+        <button type="button" class="tab" data-config="profession">Professions</button>
+      </div>
+      <div id="config-town" class="config-panel active">
+        <div class="toolbar">
+          <div class="preset-row" id="town-presets">
+            <button type="button" class="btn" data-preset="hamlet">Hamlet</button>
+            <button type="button" class="btn" data-preset="mixed">Mixed village</button>
+            <button type="button" class="btn" data-preset="iron_hall">Iron hall</button>
+            <button type="button" class="btn" data-preset="farm_town">Farm town</button>
+          </div>
+          <label>Default cap / villager<input type="number" min="0" step="1" id="town-cap-trader"></label>
+          <label>Cap / mouth<input type="number" min="0" step="1" id="town-cap-mouth"></label>
+          <label>Restock raw floor<input type="number" min="0" max="1" step="0.05" id="town-floor"></label>
+          <label>Price markup<input type="number" min="0.1" step="0.1" id="town-markup"></label>
+          <label>Pulses / day<input type="number" min="1" step="1" id="town-pulses"></label>
+          <button type="button" class="btn" id="btn-reset-mid">Reset stocks to mid</button>
+          <button type="button" class="btn" id="btn-export-knobs">Export mod knobs</button>
+        </div>
+        <p class="ref-note">Rates are items per villager per Minecraft day. Cap = cap_per_trader × traders_of(c) + cap_per_mouth × total villagers. Changing N rewrites caps immediately.</p>
+        <div class="stats" id="town-stats"></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="town-n">N</th>
+                <th>Profession</th>
+              </tr>
+            </thead>
+            <tbody id="town-pop-grid"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="panel-profession" class="config-panel">
+    <div class="toolbar">
+      <label>Profession<select id="prof-select"></select></label>
+      <label>Population N<input type="number" min="0" step="1" id="prof-n"></label>
+      <label>Direction
+        <select id="prof-add-dir">
+          <option value="buy">Player buys (villager sells)</option>
+          <option value="sell">Player sells (villager buys)</option>
+        </select>
+      </label>
+      <div class="item-search-wrap">
+        <label>Add item from registry
+          <input type="search" id="prof-item-search" placeholder="Search all Minecraft items…" autocomplete="off">
+        </label>
+        <div class="item-search-results" id="prof-item-results" hidden></div>
+      </div>
+      <button type="button" class="btn" id="btn-clear-pool">Clear pool</button>
+    </div>
+    <div class="two-col">
+      <div>
+        <h2 style="font-size:1rem;margin:0 0 0.5rem">Raw produce (hungry, below mid)</h2>
+        <p class="ref-note">Search and add one item at a time. Rate is items per villager per day while stock is below midpoint.</p>
+        <div class="item-search-wrap">
+          <label>Add produce
+            <input type="search" id="prof-produce-search" placeholder="Search all Minecraft items…" autocomplete="off">
+          </label>
+          <div class="item-search-results" id="prof-produce-results" hidden></div>
+        </div>
+        <div class="table-wrap" style="margin-top:0.75rem">
+          <table>
+            <thead><tr><th>Item</th><th>Rate / villager / day</th><th>Cap / villager</th><th></th></tr></thead>
+            <tbody id="prof-produce-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h2 style="font-size:1rem;margin:0 0 0.5rem">Raw consume (heavy, above mid)</h2>
+        <p class="ref-note">Search and add one item at a time. Rate is items per villager per day while stock is above midpoint.</p>
+        <div class="item-search-wrap">
+          <label>Add consume
+            <input type="search" id="prof-consume-search" placeholder="Search all Minecraft items…" autocomplete="off">
+          </label>
+          <div class="item-search-results" id="prof-consume-results" hidden></div>
+        </div>
+        <div class="table-wrap" style="margin-top:0.75rem">
+          <table>
+            <thead><tr><th>Item</th><th>Rate / villager / day</th><th>Cap / villager</th><th></th></tr></thead>
+            <tbody id="prof-consume-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <h2 style="font-size:1rem;margin:1rem 0 0.5rem">Offer pool</h2>
+    <p class="ref-note">Search and add one item at a time. Click Buys/Sells to toggle. Id is derived from the name. Item and recipe come from the registry (recipe is the restock BOM). Cap / villager is that item’s tank size per staffed trader. Restock is per villager per day on player-buy rows.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>On</th>
+            <th>Name</th>
+            <th>Level</th>
+            <th>Buys / Sells</th>
+            <th>Recipe</th>
+            <th>Cap / villager</th>
+            <th>Vanilla em</th>
+            <th>Restock</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="prof-offer-body"></tbody>
+      </table>
+    </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="panel-scenario" class="panel">
+    <div class="toolbar">
+      <label>Dump<select id="scen-dump-item"></select></label>
+      <label>Amount<input type="number" min="0" step="1" id="scen-dump-amt" value="16"></label>
+      <button type="button" class="btn" id="btn-dump">Dump</button>
+      <label>Shop<select id="scen-shop-offer"></select></label>
+      <label>Uses<input type="number" min="0" step="1" id="scen-shop-amt" value="4"></label>
+      <button type="button" class="btn" id="btn-shop">Shop</button>
+      <label>Need<select id="scen-need-item"></select></label>
+      <button type="button" class="btn" id="btn-need">Toggle need (pause produce)</button>
+      <label>Days<input type="number" min="1" step="1" id="scen-days" value="3"></label>
+      <button type="button" class="btn" id="btn-tick">Tick days</button>
+      <label>Emeralds<input type="number" min="0" step="1" id="scen-emeralds"></label>
+      <label>Em / day<input type="number" min="0" step="1" id="scen-income"></label>
+    </div>
+    <p class="ref-note">Need pauses raw produce on that commodity. Restock of finished goods still drains raw if the tank is below mid. Shop spends the emerald wallet and reads hungriest input for price.</p>
+    <pre class="scen-log" id="scen-log"></pre>
+  </div>
+
+  <div id="panel-invariants" class="panel">
+    <p class="ref-note">Compare village restock drain and idle dump room to player repair burn and a mining session. Flags if the town can replace the mine.</p>
+    <div class="toolbar">
+      <label>Burn iron / hr<input type="number" min="0" step="1" id="inv-burn-iron"></label>
+      <label>Burn diamond / hr<input type="number" min="0" step="1" id="inv-burn-diamond"></label>
+      <label>Burn coal / hr<input type="number" min="0" step="1" id="inv-burn-coal"></label>
+      <label>Mine iron<input type="number" min="0" step="1" id="inv-mine-iron"></label>
+      <label>Mine diamond<input type="number" min="0" step="1" id="inv-mine-diamond"></label>
+      <label>Mine coal<input type="number" min="0" step="1" id="inv-mine-coal"></label>
+    </div>
+    <div class="stats" id="inv-flags"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Anchor</th><th>Village restock drain / day</th><th>Idle dump room</th><th>Repair burn</th><th>Mining session</th></tr>
+        </thead>
+        <tbody id="inv-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="panel-materials" class="panel">
+    <p class="ref-note">Reference: gather-time calibration. Not the primary balance surface.</p>
+    <div class="toolbar">
+      <label>
+        Category
+        <select id="mat-filter-category"><option value="">All</option></select>
+      </label>
+      <label>
+        Search
+        <input type="search" id="mat-filter-search" placeholder="Material name…">
+      </label>
+      <label>
+        Show
+        <select id="mat-filter-status">
+          <option value="">All</option>
+          <option value="done">With T data</option>
+          <option value="pending">Missing T data</option>
+        </select>
+      </label>
+      <button type="button" class="btn" id="btn-clear-materials">Reset material data</button>
+      <span class="save-status" id="save-status"></span>
+    </div>
+    <div class="stats" id="mat-stats"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Unlocks trades</th>
+            <th>cal_qty</th>
+            <th>t_run1</th>
+            <th>t_run2</th>
+            <th>t_run3</th>
+            <th>t_avg</th>
+            <th>min/unit</th>
+            <th>ready_when</th>
+            <th>notes</th>
+          </tr>
+        </thead>
+        <tbody id="mat-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="panel-derivatives" class="panel">
+    <div class="toolbar">
+      <label>
+        Type
+        <select id="der-filter-type">
+          <option value="">All</option>
+          <option value="recipe">Recipe chain</option>
+          <option value="animal_farm">Animal farm</option>
+          <option value="mob_hunt">Mob hunt</option>
+        </select>
+      </label>
+      <label>
+        Search
+        <input type="search" id="der-filter-search" placeholder="Material name…">
+      </label>
+    </div>
+    <div class="stats" id="der-stats"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Derived material</th>
+            <th>Formula / model</th>
+            <th>Base inputs</th>
+            <th>min/unit</th>
+            <th>Unlocks trades</th>
+          </tr>
+        </thead>
+        <tbody id="der-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="panel-trades" class="panel">
+    <div class="toolbar">
+      <label>
+        Profession
+        <select id="filter-profession"><option value="">All</option></select>
+      </label>
+      <label>
+        Direction
+        <select id="filter-direction">
+          <option value="">All</option>
+          <option value="sell">Sell (→ emeralds)</option>
+          <option value="buy">Buy (← emeralds)</option>
+        </select>
+      </label>
+      <label>
+        Level
+        <select id="filter-level">
+          <option value="">All</option>
+          <option value="novice">Novice</option>
+          <option value="apprentice">Apprentice</option>
+          <option value="journeyman">Journeyman</option>
+          <option value="expert">Expert</option>
+          <option value="master">Master</option>
+        </select>
+      </label>
+      <label>
+        Search
+        <input type="search" id="filter-search" placeholder="Item name or id…">
+      </label>
+      <label>
+        Sort
+        <select id="sort-by">
+          <option value="profession">Profession → Level</option>
+          <option value="delta">Largest price delta</option>
+          <option value="item">Item name</option>
+        </select>
+      </label>
+    </div>
+    <div class="stats" id="trade-stats"></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Trade</th>
+            <th>Recipe (leaves)</th>
+            <th>Gather min</th>
+            <th>Fair price</th>
+            <th>Vanilla</th>
+            <th>Delta</th>
+          </tr>
+        </thead>
+        <tbody id="trade-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="materials.js"></script>
+  <script src="recipes.js"></script>
+  <script src="trades.js"></script>
+  <script src="ledger.js"></script>
+  <script src="lab-defaults.js"></script>
+  <script src="items-registry.js"></script>
+  <script src="lab.js"></script>
+  <script>
+    const CALIBRATION_URL = 'calibration.json';
+    const PROFESSION_ORDER = [
+      'armorer', 'butcher', 'cartographer', 'cleric', 'farmer', 'fisherman',
+      'fletcher', 'leatherworker', 'librarian', 'mason', 'shepherd',
+      'toolsmith', 'weaponsmith',
+    ];
+    const LEVEL_ORDER = ['novice', 'apprentice', 'journeyman', 'expert', 'master'];
+
+    const DEFAULT_MATERIAL = {
+      ready_when: '',
+      calibration_qty: 32,
+      t_run1: '',
+      t_run2: '',
+      t_run3: '',
+      t_avg: '',
+      risk_r: '',
+      notes: '',
+    };
+
+    const modelMeta = {
+      anchor_material: 'stick',
+      anchor_qty: 32,
+      anchor_emeralds: 1,
+      animal_active_min: typeof ANIMAL_FARM_MODEL !== 'undefined' ? ANIMAL_FARM_MODEL.active_min : 2,
+      mob_hunt_active_min: typeof MOB_HUNT_MODEL !== 'undefined' ? MOB_HUNT_MODEL.active_min : 6,
+      mob_hunt_default_risk: typeof MOB_HUNT_MODEL !== 'undefined' ? MOB_HUNT_MODEL.default_risk : 1.25,
+    };
+
+    let materialsCal = {};
+    let saveQueued = false;
+    let activeTimer = null;
+    let activeTab = 'lab';
+
+    const ALL_MATERIALS = () => [
+      ...(typeof GATHER_TESTS !== 'undefined' ? GATHER_TESTS : []),
+      ...(typeof DERIVED_MATERIALS !== 'undefined' ? DERIVED_MATERIALS : []),
+    ];
+
+    function materialById(id) {
+      return ALL_MATERIALS().find(m => m.id === id);
+    }
+
+    function gatherTestById(id) {
+      return (typeof GATHER_TESTS !== 'undefined' ? GATHER_TESTS : []).find(m => m.id === id);
+    }
+
+    function isRecipeDerivedMaterial(matId) {
+      const m = materialById(matId);
+      if (m?.anchor) return false;
+      return typeof MATERIAL_RECIPES !== 'undefined' && matId in MATERIAL_RECIPES;
+    }
+
+    function formatUnlocks(ids, limit = 4) {
+      if (!ids?.length) return '<span class="item-id">—</span>';
+      const shown = ids.slice(0, limit).map(id => id.replace(/_/g, ' ')).join(', ');
+      const more = ids.length > limit ? ` <strong>+${ids.length - limit}</strong>` : '';
+      return `<span class="unlocks-list">${escapeHtml(shown)}${more}</span>`;
+    }
+
+    function formatBaseInputs(bases) {
+      if (!bases || !Object.keys(bases).length) return '—';
+      return Object.entries(bases)
+        .map(([k, v]) => `${Math.round(v * 1000) / 1000}× ${k}`)
+        .join(', ');
+    }
+
+    function getMatCal(id) {
+      const def = materialById(id);
+      const qty = def?.default_qty ?? 32;
+      const cal = { ...DEFAULT_MATERIAL, calibration_qty: qty, ...(materialsCal[id] || {}) };
+      if (def?.obtainment === 'mob_hunt' && (cal.risk_r === '' || cal.risk_r == null)) {
+        cal.risk_r = def.risk_r ?? modelMeta.mob_hunt_default_risk ?? 1.25;
+      }
+      return cal;
+    }
+
+    function isAnimalFarmMaterial(matId) {
+      const m = materialById(matId);
+      return m?.obtainment === 'animal_farm';
+    }
+
+    function animalActiveMin() {
+      return modelMeta.animal_active_min ?? ANIMAL_FARM_MODEL?.active_min ?? 2;
+    }
+
+    function derivedAnimalTAvg(matId) {
+      const m = materialById(matId);
+      if (!m || m.obtainment !== 'animal_farm') return null;
+      const cal = getMatCal(matId);
+      const cycleMin = animalActiveMin() + m.growth_min;
+      const cycles = cal.calibration_qty / m.yield_per_cycle;
+      return Math.round(cycleMin * cycles * 100) / 100;
+    }
+
+    function isMobHuntMaterial(matId) {
+      const m = materialById(matId);
+      return m?.obtainment === 'mob_hunt';
+    }
+
+    function mobHuntActiveMin() {
+      return modelMeta.mob_hunt_active_min ?? MOB_HUNT_MODEL?.active_min ?? 6;
+    }
+
+    function mobRiskR(matId) {
+      const cal = getMatCal(matId);
+      if (cal.risk_r !== '' && cal.risk_r != null) return Number(cal.risk_r);
+      const m = materialById(matId);
+      return m?.risk_r ?? modelMeta.mob_hunt_default_risk ?? 1.25;
+    }
+
+    function derivedMobHuntTAvg(matId) {
+      const m = materialById(matId);
+      if (!m || m.obtainment !== 'mob_hunt') return null;
+      const cal = getMatCal(matId);
+      const huntMin = mobHuntActiveMin();
+      const cycles = cal.calibration_qty / m.yield_per_cycle;
+      const base = huntMin * cycles;
+      const risk = mobRiskR(matId);
+      return Math.round(base * risk * 100) / 100;
+    }
+
+    function getEffectiveTAvg(matId) {
+      if (isAnimalFarmMaterial(matId)) return derivedAnimalTAvg(matId);
+      if (isMobHuntMaterial(matId)) return derivedMobHuntTAvg(matId);
+      const cal = getMatCal(matId);
+      if (cal.t_avg === '' || cal.t_avg == null) return null;
+      return Number(cal.t_avg);
+    }
+
+    function isMaterialCalibrated(matId) {
+      if (isAnimalFarmMaterial(matId) || isMobHuntMaterial(matId)) return true;
+      if (isRecipeDerivedMaterial(matId)) {
+        const bases = materialById(matId)?.bases;
+        if (bases) {
+          return Object.keys(bases).every(b => isMaterialCalibrated(b));
+        }
+        return derivedRecipeMinutesPerUnit(matId) != null;
+      }
+      return hasTData(getMatCal(matId));
+    }
+
+    function isDerivedMaterial(matId) {
+      return isAnimalFarmMaterial(matId) || isMobHuntMaterial(matId) || isRecipeDerivedMaterial(matId);
+    }
+
+    function derivedRecipeMinutesPerUnit(matId, cache = {}) {
+      if (cache[matId] !== undefined) return cache[matId];
+      const def = typeof MATERIAL_RECIPES !== 'undefined' ? MATERIAL_RECIPES[matId] : null;
+      if (!def) return null;
+      let inputCost = 0;
+      for (const [ing, qty] of Object.entries(def.inputs)) {
+        const ingMpu = minutesPerUnit(ing, cache);
+        if (ingMpu == null) {
+          cache[matId] = null;
+          return null;
+        }
+        inputCost += qty * ingMpu;
+      }
+      const mpu = inputCost / def.output;
+      cache[matId] = mpu;
+      return mpu;
+    }
+
+    function calcAvg(a, b, c) {
+      const nums = [a, b, c]
+        .map(v => (v === '' || v == null ? NaN : Number(v)))
+        .filter(n => !Number.isNaN(n));
+      if (!nums.length) return '';
+      return Math.round((nums.reduce((s, n) => s + n, 0) / nums.length) * 100) / 100;
+    }
+
+    function minutesPerUnit(matId, cache = {}) {
+      if (cache[matId] !== undefined) return cache[matId];
+      if (isAnimalFarmMaterial(matId)) {
+        const tAvg = derivedAnimalTAvg(matId);
+        if (tAvg == null) { cache[matId] = null; return null; }
+        const cal = getMatCal(matId);
+        const mpu = tAvg / cal.calibration_qty;
+        cache[matId] = mpu;
+        return mpu;
+      }
+      if (isMobHuntMaterial(matId)) {
+        const tAvg = derivedMobHuntTAvg(matId);
+        if (tAvg == null) { cache[matId] = null; return null; }
+        const cal = getMatCal(matId);
+        const mpu = tAvg / cal.calibration_qty;
+        cache[matId] = mpu;
+        return mpu;
+      }
+      const cal = getMatCal(matId);
+      const manualAvg = cal.t_avg !== '' && cal.t_avg != null ? Number(cal.t_avg) : null;
+      if (manualAvg != null && cal.calibration_qty) {
+        const mpu = manualAvg / cal.calibration_qty;
+        cache[matId] = mpu;
+        return mpu;
+      }
+      if (isRecipeDerivedMaterial(matId)) {
+        const mpu = derivedRecipeMinutesPerUnit(matId, cache);
+        cache[matId] = mpu;
+        return mpu;
+      }
+      cache[matId] = null;
+      return null;
+    }
+
+    function expandMaterialToLeaves(itemId, qty, seen = new Set()) {
+      if (seen.has(itemId)) return {};
+      if (isAnimalFarmMaterial(itemId) || isMobHuntMaterial(itemId)) {
+        return { [itemId]: qty };
+      }
+      const matDef = typeof MATERIAL_RECIPES !== 'undefined' ? MATERIAL_RECIPES[itemId] : null;
+      if (matDef) {
+        seen.add(itemId);
+        const scale = qty / matDef.output;
+        const out = {};
+        for (const [mat, count] of Object.entries(matDef.inputs)) {
+          const sub = expandMaterialToLeaves(mat, count * scale, new Set(seen));
+          for (const [k, v] of Object.entries(sub)) {
+            out[k] = (out[k] || 0) + v;
+          }
+        }
+        return out;
+      }
+      const recipe = typeof RECIPES !== 'undefined' ? RECIPES[itemId] : null;
+      if (recipe) {
+        seen.add(itemId);
+        const out = {};
+        for (const [mat, count] of Object.entries(recipe)) {
+          const sub = expandMaterialToLeaves(mat, count * qty, new Set(seen));
+          for (const [k, v] of Object.entries(sub)) {
+            out[k] = (out[k] || 0) + v;
+          }
+        }
+        return out;
+      }
+      return { [itemId]: qty };
+    }
+
+    function expandToLeaves(itemId, qty, seen = new Set()) {
+      return expandMaterialToLeaves(itemId, qty, seen);
+    }
+
+    function expandTradeRecipe(trade) {
+      const leaves = {};
+      const recipe = trade.recipe || {};
+      for (const [mat, count] of Object.entries(recipe)) {
+        const sub = expandToLeaves(mat, count);
+        for (const [k, v] of Object.entries(sub)) {
+          leaves[k] = (leaves[k] || 0) + v;
+        }
+      }
+      return leaves;
+    }
+
+    function gatherMinutes(leaves) {
+      let total = 0;
+      const missing = [];
+      for (const [mat, count] of Object.entries(leaves)) {
+        const mpu = minutesPerUnit(mat);
+        if (mpu == null) {
+          missing.push(mat);
+          continue;
+        }
+        total += count * mpu;
+      }
+      return { total: Math.round(total * 100) / 100, missing };
+    }
+
+    function anchorMinutes() {
+      const anchor = modelMeta.anchor_material;
+      const tAvg = getEffectiveTAvg(anchor);
+      if (tAvg == null) return null;
+      return tAvg;
+    }
+
+    function computeFairPrice(trade) {
+      const leaves = expandTradeRecipe(trade);
+      const { total, missing } = gatherMinutes(leaves);
+      const stickMin = anchorMinutes();
+      if (stickMin == null) return { leaves, total, missing, fair: null, reason: 'Anchor (stick) not calibrated' };
+      if (missing.length) return { leaves, total, missing, fair: null, reason: `Missing: ${missing.join(', ')}` };
+
+      if (trade.direction === 'buy') {
+        const fairEmeralds = Math.round((total / stickMin) * 100) / 100;
+        return { leaves, total, missing, fair: { emeralds: fairEmeralds }, reason: null };
+      }
+
+      const mat = Object.keys(trade.recipe || {})[0];
+      const mpu = minutesPerUnit(mat);
+      const mpuStick = minutesPerUnit(modelMeta.anchor_material);
+      if (mpu == null || mpuStick == null) {
+        return { leaves, total, missing, fair: null, reason: 'Material not calibrated' };
+      }
+      const itemsPerEmerald = Math.round((modelMeta.anchor_qty * mpu / mpuStick) * 100) / 100;
+      const fairEmeralds = Math.round((trade.quantity / itemsPerEmerald) * 100) / 100;
+      return { leaves, total, missing, fair: { emeralds: fairEmeralds, itemsPerEmerald }, reason: null };
+    }
+
+    function migrateV1(data) {
+      const out = {};
+      const v1 = data.calibration || {};
+      if (v1.armorer_novice_sell_coal?.t_avg) {
+        out.coal = {
+          ...DEFAULT_MATERIAL,
+          calibration_qty: v1.armorer_novice_sell_coal.calibration_qty || 32,
+          t_run1: v1.armorer_novice_sell_coal.t_run1,
+          t_run2: v1.armorer_novice_sell_coal.t_run2,
+          t_run3: v1.armorer_novice_sell_coal.t_run3,
+          t_avg: v1.armorer_novice_sell_coal.t_avg,
+          notes: 'Migrated from per-trade coal calibration',
+        };
+      }
+      out.iron_ingot = {
+        ...DEFAULT_MATERIAL,
+        calibration_qty: 24,
+        t_run1: 3.6,
+        t_avg: 3.6,
+        ready_when: 'Iron pick equipped, cave ready',
+        notes: '24 ingots = full iron armor set materials (~3.6 min)',
+      };
+      return out;
+    }
+
+    async function loadCalibrationFromFile() {
+      try {
+        const res = await fetch(CALIBRATION_URL, { cache: 'no-store' });
+        if (!res.ok) return { materials: {}, migrated: false };
+        const data = await res.json();
+        if (data.version === '2.0' && data.materials) {
+          if (data.model_meta) Object.assign(modelMeta, data.model_meta);
+          if (modelMeta.animal_active_min == null) {
+            modelMeta.animal_active_min = ANIMAL_FARM_MODEL?.active_min ?? 2;
+          }
+          if (modelMeta.mob_hunt_active_min == null) {
+            modelMeta.mob_hunt_active_min = MOB_HUNT_MODEL?.active_min ?? 6;
+          }
+          if (modelMeta.mob_hunt_default_risk == null) {
+            modelMeta.mob_hunt_default_risk = MOB_HUNT_MODEL?.default_risk ?? 1.25;
+          }
+          return { materials: data.materials, migrated: false };
+        }
+        if (data.calibration) {
+          return { materials: migrateV1(data), migrated: true };
+        }
+      } catch (_) { /* serve.py not running */ }
+      return { materials: {}, migrated: false };
+    }
+
+    function buildPayload() {
+      return {
+        version: '2.0',
+        updated_at: new Date().toISOString(),
+        model_meta: modelMeta,
+        materials: materialsCal,
+      };
+    }
+
+    function setSaveStatus(text, state) {
+      const el = document.getElementById('save-status');
+      el.textContent = text;
+      el.classList.remove('saved', 'pending', 'error');
+      if (state) el.classList.add(state);
+    }
+
+    async function flushCalibrationToFile() {
+      saveQueued = false;
+      setSaveStatus('Saving…', 'pending');
+      try {
+        const res = await fetch(CALIBRATION_URL, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(buildPayload(), null, 2),
+        });
+        if (!res.ok && res.status !== 204) throw new Error(`HTTP ${res.status}`);
+        setSaveStatus('Saved to calibration.json', 'saved');
+        clearTimeout(flushCalibrationToFile._hide);
+        flushCalibrationToFile._hide = setTimeout(() => setSaveStatus('', null), 2000);
+      } catch (_) {
+        setSaveStatus('Save failed — is serve.py running?', 'error');
+      }
+    }
+
+    function saveCalibration() {
+      if (activeTab === 'materials') updateMatStats();
+      else updateTradeStats();
+      setSaveStatus('Pending…', 'pending');
+      clearTimeout(saveCalibration._debounce);
+      saveCalibration._debounce = setTimeout(flushCalibrationToFile, 350);
+      saveQueued = true;
+    }
+
+    function setMatField(id, field, value) {
+      if (!materialsCal[id]) materialsCal[id] = { ...getMatCal(id) };
+      materialsCal[id][field] = value;
+      if (field === 't_run1' || field === 't_run2' || field === 't_run3') {
+        materialsCal[id].t_avg = calcAvg(
+          materialsCal[id].t_run1,
+          materialsCal[id].t_run2,
+          materialsCal[id].t_run3
+        );
+      }
+      saveCalibration();
+      if (activeTab === 'trades') renderTrades();
+      if (activeTab === 'derivatives') renderDerivatives();
+      else renderDerivatives();
+    }
+
+    function hasTData(cal) {
+      return [cal.t_run1, cal.t_run2, cal.t_run3].some(v => v !== '' && v != null);
+    }
+
+    function formatElapsed(ms) {
+      const totalSec = Math.max(0, ms) / 1000;
+      const min = Math.floor(totalSec / 60);
+      const sec = Math.floor(totalSec % 60);
+      const tenth = Math.floor((totalSec % 1) * 10);
+      return `${min}:${String(sec).padStart(2, '0')}.${tenth}`;
+    }
+
+    function msToMinutes(ms) {
+      return Math.round((ms / 60000) * 10) / 10;
+    }
+
+    function getElapsedMs(timer) {
+      if (!timer) return 0;
+      const segment = timer.paused ? 0 : Date.now() - timer.startTime;
+      return timer.elapsedMs + segment;
+    }
+
+    function getTimerCell(rowId, field) {
+      return document.querySelector(`tr[data-id="${CSS.escape(rowId)}"] .run-timer[data-field="${field}"]`);
+    }
+
+    function updateTimerCellUI(rowId, field) {
+      const cell = getTimerCell(rowId, field);
+      if (!cell) return;
+      const display = cell.querySelector('.run-timer-display');
+      const startBtn = cell.querySelector('.btn-start');
+      const pauseBtn = cell.querySelector('.btn-pause');
+      const stopBtn = cell.querySelector('.btn-stop');
+      const isThisTimer = activeTimer && activeTimer.rowId === rowId && activeTimer.field === field;
+      if (isThisTimer) {
+        display.textContent = formatElapsed(getElapsedMs(activeTimer));
+        display.classList.add('active');
+        display.classList.toggle('paused', activeTimer.paused);
+        startBtn.disabled = true;
+        pauseBtn.disabled = false;
+        pauseBtn.textContent = activeTimer.paused ? '▶' : '⏸';
+        pauseBtn.title = activeTimer.paused ? 'Resume timer' : 'Pause timer';
+        pauseBtn.classList.toggle('btn-resume', activeTimer.paused);
+        stopBtn.disabled = false;
+      } else {
+        display.textContent = '—';
+        display.classList.remove('active', 'paused');
+        startBtn.disabled = !!activeTimer;
+        pauseBtn.disabled = true;
+        pauseBtn.textContent = '⏸';
+        pauseBtn.title = 'Pause timer';
+        pauseBtn.classList.remove('btn-resume');
+        stopBtn.disabled = true;
+      }
+    }
+
+    function refreshAllTimerCells() {
+      document.querySelectorAll('#mat-tbody .run-timer').forEach(cell => {
+        updateTimerCellUI(cell.closest('tr').dataset.id, cell.dataset.field);
+      });
+    }
+
+    function clearActiveTimer() {
+      if (!activeTimer) return;
+      if (activeTimer.intervalId) clearInterval(activeTimer.intervalId);
+      const prev = activeTimer;
+      activeTimer = null;
+      updateTimerCellUI(prev.rowId, prev.field);
+      refreshAllTimerCells();
+    }
+
+    function startRunTimer(rowId, field) {
+      if (activeTimer) clearActiveTimer();
+      activeTimer = {
+        rowId,
+        field,
+        startTime: Date.now(),
+        elapsedMs: 0,
+        paused: false,
+        intervalId: null,
+      };
+      activeTimer.intervalId = setInterval(() => {
+        if (activeTimer && !activeTimer.paused) {
+          updateTimerCellUI(activeTimer.rowId, activeTimer.field);
+        }
+      }, 100);
+      refreshAllTimerCells();
+    }
+
+    function pauseRunTimer(rowId, field) {
+      if (!activeTimer || activeTimer.rowId !== rowId || activeTimer.field !== field) return;
+      if (activeTimer.paused) {
+        activeTimer.startTime = Date.now();
+        activeTimer.paused = false;
+        activeTimer.intervalId = setInterval(() => {
+          if (activeTimer && !activeTimer.paused) {
+            updateTimerCellUI(activeTimer.rowId, activeTimer.field);
+          }
+        }, 100);
+      } else {
+        activeTimer.elapsedMs += Date.now() - activeTimer.startTime;
+        activeTimer.paused = true;
+        if (activeTimer.intervalId) {
+          clearInterval(activeTimer.intervalId);
+          activeTimer.intervalId = null;
+        }
+      }
+      updateTimerCellUI(rowId, field);
+      refreshAllTimerCells();
+    }
+
+    function stopRunTimer(rowId, field) {
+      if (!activeTimer || activeTimer.rowId !== rowId || activeTimer.field !== field) return;
+      const minutes = msToMinutes(getElapsedMs(activeTimer));
+      clearActiveTimer();
+      const row = document.querySelector(`tr[data-id="${CSS.escape(rowId)}"]`);
+      const input = row?.querySelector(`input[data-field="${field}"]`);
+      if (input) {
+        input.value = minutes;
+        setMatField(rowId, field, minutes);
+        row.querySelector('[data-field="t_avg"]').value = getMatCal(rowId).t_avg;
+        row.querySelector('[data-field="min-unit"]').value = fmtMinUnit(rowId);
+        row.classList.toggle('has-t-data', hasTData(getMatCal(rowId)));
+      }
+    }
+
+    function clearRunTimer(rowId, field) {
+      if (activeTimer?.rowId === rowId && activeTimer?.field === field) clearActiveTimer();
+      const row = document.querySelector(`tr[data-id="${CSS.escape(rowId)}"]`);
+      const input = row?.querySelector(`input[data-field="${field}"]`);
+      if (input) {
+        input.value = '';
+        setMatField(rowId, field, '');
+        row.querySelector('[data-field="t_avg"]').value = getMatCal(rowId).t_avg;
+        row.querySelector('[data-field="min-unit"]').value = fmtMinUnit(rowId);
+        row.classList.toggle('has-t-data', hasTData(getMatCal(rowId)));
+      }
+    }
+
+    function onTimerClick(e) {
+      const btn = e.target.closest('.btn-timer');
+      if (!btn) return;
+      const cell = btn.closest('.run-timer');
+      const row = btn.closest('tr');
+      if (!cell || !row) return;
+      const rowId = row.dataset.id;
+      const field = cell.dataset.field;
+      if (btn.classList.contains('btn-start')) startRunTimer(rowId, field);
+      else if (btn.classList.contains('btn-pause')) pauseRunTimer(rowId, field);
+      else if (btn.classList.contains('btn-stop')) stopRunTimer(rowId, field);
+      else if (btn.classList.contains('btn-clear')) clearRunTimer(rowId, field);
+    }
+
+    function renderRunTimer(field) {
+      return `<div class="run-timer" data-field="${field}">
+        <span class="run-timer-display">—</span>
+        <button type="button" class="btn-timer btn-start" title="Start timer">▶</button>
+        <button type="button" class="btn-timer btn-pause" title="Pause timer" disabled>⏸</button>
+        <button type="button" class="btn-timer btn-stop" title="Stop and log time (min)" disabled>■</button>
+        <button type="button" class="btn-timer btn-clear" title="Clear logged time">✕</button>
+      </div>`;
+    }
+
+    function fmtMinUnit(matId) {
+      const mpu = minutesPerUnit(matId);
+      return mpu == null ? '' : Math.round(mpu * 10000) / 10000;
+    }
+
+    function getFilteredMaterials() {
+      const cat = document.getElementById('mat-filter-category').value;
+      const search = document.getElementById('mat-filter-search').value.trim().toLowerCase();
+      const status = document.getElementById('mat-filter-status').value;
+      const list = typeof GATHER_TESTS !== 'undefined' ? GATHER_TESTS : [];
+
+      return list.filter(m => {
+        if (cat && m.category !== cat) return false;
+        if (search && !`${m.display_name} ${m.id}`.toLowerCase().includes(search)) return false;
+        const done = isMaterialCalibrated(m.id);
+        if (status === 'done' && !done) return false;
+        if (status === 'pending' && done) return false;
+        return true;
+      });
+    }
+
+    function getFilteredDerivatives() {
+      const type = document.getElementById('der-filter-type').value;
+      const search = document.getElementById('der-filter-search').value.trim().toLowerCase();
+      const list = typeof DERIVED_MATERIALS !== 'undefined' ? DERIVED_MATERIALS : [];
+      return list.filter(m => {
+        if (type && m.obtainment !== type) return false;
+        if (search && !`${m.display_name} ${m.id} ${m.formula || ''}`.toLowerCase().includes(search)) return false;
+        return true;
+      });
+    }
+
+    function renderMobHuntRow(m, cal) {
+      const huntMin = mobHuntActiveMin();
+      const risk = mobRiskR(m.id);
+      const tAvg = derivedMobHuntTAvg(m.id);
+      const readyWhen = MOB_HUNT_MODEL?.ready_when || 'Mob farm ready';
+      const cycles = Math.round((cal.calibration_qty / m.yield_per_cycle) * 100) / 100;
+      return `<tr class="has-t-data derived-row" data-id="${m.id}" data-derived="mob_hunt">
+          <td>
+            <div class="item-name">${escapeHtml(m.display_name)}</div>
+            <div class="item-id">${escapeHtml(m.id)} · ${escapeHtml(m.mob)}</div>
+            <span class="category-pill">${escapeHtml(m.category)}</span>
+            <div class="derived-badge mob-hunt">Mob hunt</div>
+          </td>
+          <td><input type="number" data-field="calibration_qty" min="1" step="1" value="${escapeAttr(cal.calibration_qty)}"></td>
+          <td colspan="3" class="derived-formula">
+            <strong>${huntMin} min</strong> hunt/cycle × ${cycles} cycles × risk
+            <input type="number" class="risk-input" data-field="risk_r" min="1" step="0.05" value="${escapeAttr(risk)}" title="Risk multiplier">
+            = ${tAvg} min total<br>
+            ~${m.yield_per_cycle} drops/cycle → ${fmtMinUnit(m.id) || '—'} min/unit (incl. risk)
+          </td>
+          <td><input type="number" class="t-avg" readonly tabindex="-1" value="${escapeAttr(tAvg)}"></td>
+          <td><input type="number" class="min-unit" readonly tabindex="-1" value="${escapeAttr(fmtMinUnit(m.id))}"></td>
+          <td><input type="text" readonly tabindex="-1" value="${escapeAttr(readyWhen)}"></td>
+          <td><textarea readonly tabindex="-1" rows="2">Auto: ${huntMin} min dedicated hunt + ×${risk} hostile risk (${m.mob})</textarea></td>
+        </tr>`;
+    }
+
+    function updateDerivedRowUI(id, row) {
+      if (!row) return;
+      row.querySelector('[data-field="t_avg"]').value = getEffectiveTAvg(id);
+      row.querySelector('[data-field="min-unit"]').value = fmtMinUnit(id);
+      const formulaCell = row.querySelector('.derived-formula');
+      if (!formulaCell) return;
+      const m = materialById(id);
+      const cal = getMatCal(id);
+      if (isAnimalFarmMaterial(id)) {
+        const active = animalActiveMin();
+        formulaCell.innerHTML = `
+          ${active} min active + ${m.growth_min} min growth = <strong>${active + m.growth_min} min/cycle</strong><br>
+          ~${m.yield_per_cycle} items/cycle → ${fmtMinUnit(id) || '—'} min/unit`;
+      } else if (isMobHuntMaterial(id)) {
+        const huntMin = mobHuntActiveMin();
+        const risk = mobRiskR(id);
+        const cycles = Math.round((cal.calibration_qty / m.yield_per_cycle) * 100) / 100;
+        const tAvg = derivedMobHuntTAvg(id);
+        formulaCell.innerHTML = `
+          <strong>${huntMin} min</strong> hunt/cycle × ${cycles} cycles × risk
+          <input type="number" class="risk-input" data-field="risk_r" min="1" step="0.05" value="${escapeAttr(risk)}" title="Risk multiplier">
+          = ${tAvg} min total<br>
+          ~${m.yield_per_cycle} drops/cycle → ${fmtMinUnit(id) || '—'} min/unit (incl. risk)`;
+        formulaCell.querySelector('.risk-input')?.addEventListener('change', onMatFieldChange);
+        formulaCell.querySelector('.risk-input')?.addEventListener('input', onMatFieldChange);
+      }
+    }
+
+    function renderAnimalFarmRow(m, cal) {
+      const active = animalActiveMin();
+      const tAvg = derivedAnimalTAvg(m.id);
+      const readyWhen = ANIMAL_FARM_MODEL?.ready_when || 'Standard animal pen';
+      return `<tr class="has-t-data derived-row" data-id="${m.id}" data-derived="1">
+          <td>
+            <div class="item-name">${escapeHtml(m.display_name)}</div>
+            <div class="item-id">${escapeHtml(m.id)} · ${escapeHtml(m.animal)}</div>
+            <span class="category-pill">${escapeHtml(m.category)}</span>
+            <div class="derived-badge">Derived</div>
+          </td>
+          <td><input type="number" data-field="calibration_qty" min="1" step="1" value="${escapeAttr(cal.calibration_qty)}"></td>
+          <td colspan="3" class="derived-formula">
+            ${active} min active + ${m.growth_min} min growth = <strong>${active + m.growth_min} min/cycle</strong><br>
+            ~${m.yield_per_cycle} items/cycle → ${fmtMinUnit(m.id) || '—'} min/unit
+          </td>
+          <td><input type="number" class="t-avg" readonly tabindex="-1" value="${escapeAttr(tAvg)}"></td>
+          <td><input type="number" class="min-unit" readonly tabindex="-1" value="${escapeAttr(fmtMinUnit(m.id))}"></td>
+          <td><input type="text" readonly tabindex="-1" value="${escapeAttr(readyWhen)}"></td>
+          <td><textarea readonly tabindex="-1" rows="2">Auto: pen cull/feed/breed + grow timer (${m.animal})</textarea></td>
+        </tr>`;
+    }
+
+    function renderMaterials() {
+      const list = getFilteredMaterials();
+      const tbody = document.getElementById('mat-tbody');
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="10" class="empty-msg">No gather tests match filters.</td></tr>';
+        updateMatStats();
+        return;
+      }
+
+      tbody.innerHTML = list.map(m => {
+        const cal = getMatCal(m.id);
+        const tClass = hasTData(cal) ? 'has-t-data' : '';
+        return `<tr class="${tClass}" data-id="${m.id}">
+          <td>
+            <div class="item-name">${escapeHtml(m.display_name)}${m.anchor ? ' ★' : ''}</div>
+            <div class="item-id">${escapeHtml(m.id)}</div>
+            <span class="category-pill">${escapeHtml(m.category)}</span>
+          </td>
+          <td>${formatUnlocks(m.unlocks)}</td>
+          <td><input type="number" data-field="calibration_qty" min="1" step="1" value="${escapeAttr(cal.calibration_qty)}"></td>
+          <td class="t-run-cell">
+            <input type="number" data-field="t_run1" min="0" step="0.1" placeholder="min" value="${escapeAttr(cal.t_run1)}">
+            ${renderRunTimer('t_run1')}
+          </td>
+          <td class="t-run-cell">
+            <input type="number" data-field="t_run2" min="0" step="0.1" placeholder="min" value="${escapeAttr(cal.t_run2)}">
+            ${renderRunTimer('t_run2')}
+          </td>
+          <td class="t-run-cell">
+            <input type="number" data-field="t_run3" min="0" step="0.1" placeholder="min" value="${escapeAttr(cal.t_run3)}">
+            ${renderRunTimer('t_run3')}
+          </td>
+          <td><input type="number" class="t-avg" data-field="t_avg" readonly tabindex="-1" value="${escapeAttr(cal.t_avg)}"></td>
+          <td><input type="number" class="min-unit" readonly tabindex="-1" value="${escapeAttr(fmtMinUnit(m.id))}"></td>
+          <td><input type="text" data-field="ready_when" value="${escapeAttr(cal.ready_when)}"></td>
+          <td><textarea data-field="notes" rows="2">${escapeHtml(cal.notes)}</textarea></td>
+        </tr>`;
+      }).join('');
+
+      tbody.querySelectorAll('input:not([readonly]), textarea').forEach(el => {
+        el.addEventListener('change', onMatFieldChange);
+        el.addEventListener('input', onMatFieldChange);
+      });
+      tbody.querySelectorAll('.risk-input').forEach(el => {
+        el.addEventListener('change', onMatFieldChange);
+        el.addEventListener('input', onMatFieldChange);
+      });
+      refreshAllTimerCells();
+      updateMatStats();
+    }
+
+    function onMatFieldChange(e) {
+      const row = e.target.closest('tr');
+      if (!row) return;
+      const id = row.dataset.id;
+      const field = e.target.dataset.field;
+      let value = e.target.value;
+      if (['calibration_qty', 't_run1', 't_run2', 't_run3', 'risk_r'].includes(field)) {
+        value = value === '' ? '' : Number(value);
+      }
+      setMatField(id, field, value);
+      if (isDerivedMaterial(id) && (field === 'calibration_qty' || field === 'risk_r')) {
+        updateDerivedRowUI(id, row);
+        renderTrades();
+        return;
+      }
+      if (field.startsWith('t_run') || field === 'calibration_qty') {
+        row.querySelector('[data-field="t_avg"]').value = getMatCal(id).t_avg;
+        row.querySelector('[data-field="min-unit"]').value = fmtMinUnit(id);
+        row.classList.toggle('has-t-data', hasTData(getMatCal(id)));
+        renderDerivatives();
+        renderTrades();
+      }
+    }
+
+    function renderDerivatives() {
+      const list = getFilteredDerivatives();
+      const tbody = document.getElementById('der-tbody');
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">No derivatives match filters.</td></tr>';
+        updateDerStats();
+        return;
+      }
+
+      tbody.innerHTML = list.map(m => {
+        const mpu = fmtMinUnit(m.id);
+        let formulaHtml = '';
+        if (m.obtainment === 'recipe') {
+          formulaHtml = `<span class="formula-text">${escapeHtml(m.formula || '')}</span>`;
+        } else if (m.obtainment === 'animal_farm') {
+          const active = animalActiveMin();
+          formulaHtml = `<span class="formula-text">${active} min active + ${m.growth_min} min growth / cycle · ~${m.yield_per_cycle}/cycle</span>`;
+        } else if (m.obtainment === 'mob_hunt') {
+          formulaHtml = `<span class="formula-text">${mobHuntActiveMin()} min hunt × risk ${mobRiskR(m.id)}</span>`;
+        }
+        const bases = m.bases ? formatBaseInputs(m.bases) : (m.obtainment === 'animal_farm' ? `${m.animal} farm` : m.obtainment === 'mob_hunt' ? `${m.mob} hunt` : '—');
+        return `<tr data-id="${m.id}">
+          <td>
+            <div class="item-name">${escapeHtml(m.display_name)}</div>
+            <div class="item-id">${escapeHtml(m.id)}</div>
+            <span class="category-pill">${escapeHtml(m.obtainment)}</span>
+          </td>
+          <td>${formulaHtml}</td>
+          <td class="base-inputs">${escapeHtml(bases)}</td>
+          <td>${mpu || '—'}${!mpu ? '<div class="missing-data">calibrate bases</div>' : ''}</td>
+          <td>${formatUnlocks(m.unlocks, 3)}</td>
+        </tr>`;
+      }).join('');
+      updateDerStats();
+    }
+
+    function updateDerStats() {
+      const total = typeof DERIVED_MATERIALS !== 'undefined' ? DERIVED_MATERIALS.length : 0;
+      const recipe = typeof DERIVED_MATERIALS !== 'undefined' ? DERIVED_MATERIALS.filter(m => m.obtainment === 'recipe').length : 0;
+      const priced = typeof DERIVED_MATERIALS !== 'undefined' ? DERIVED_MATERIALS.filter(m => minutesPerUnit(m.id) != null).length : 0;
+      document.getElementById('der-stats').innerHTML = `
+        <span><strong>${total}</strong> derived (${recipe} recipe chains)</span>
+        <span><strong>${priced}</strong> / ${total} priced from base gather tests</span>
+        <span>Showing <strong>${getFilteredDerivatives().length}</strong></span>
+      `;
+    }
+
+    function updateMatStats() {
+      const list = typeof GATHER_TESTS !== 'undefined' ? GATHER_TESTS : [];
+      const total = list.length;
+      const withT = list.filter(m => isMaterialCalibrated(m.id)).length;
+      const visible = getFilteredMaterials().length;
+      document.getElementById('mat-stats').innerHTML = `
+        <span><strong>${total}</strong> gather tests (run timers on base materials only)</span>
+        <span><strong>${withT}</strong> / ${total} calibrated (${pct(withT, total)})</span>
+        <span>Anchor: <strong>${modelMeta.anchor_qty}× ${modelMeta.anchor_material}</strong> = ${modelMeta.anchor_emeralds} emerald</span>
+        <span>Showing <strong>${visible}</strong></span>
+      `;
+    }
+
+    function formatEmerald(trade) {
+      if (trade.emerald_cost_max != null) {
+        return `${trade.emerald_cost}–${trade.emerald_cost_max} em`;
+      }
+      return trade.direction === 'sell'
+        ? `${trade.quantity} → ${trade.emerald_cost} em`
+        : `${trade.emerald_cost} em → ${trade.quantity}`;
+    }
+
+    function vanillaEmeralds(trade) {
+      if (trade.emerald_cost_max != null) {
+        return (trade.emerald_cost + trade.emerald_cost_max) / 2;
+      }
+      return trade.emerald_cost;
+    }
+
+    function formatLeaves(leaves) {
+      return Object.entries(leaves)
+        .map(([k, v]) => `${v}× ${k}`)
+        .join(', ');
+    }
+
+    function profIndex(p) {
+      const i = PROFESSION_ORDER.indexOf(p);
+      return i >= 0 ? i : 99;
+    }
+
+    function levelIndex(l) {
+      const i = LEVEL_ORDER.indexOf(l);
+      return i >= 0 ? i : 99;
+    }
+
+    function getFilteredTrades() {
+      const prof = document.getElementById('filter-profession').value;
+      const dir = document.getElementById('filter-direction').value;
+      const level = document.getElementById('filter-level').value;
+      const search = document.getElementById('filter-search').value.trim().toLowerCase();
+      const sortBy = document.getElementById('sort-by').value;
+
+      let list = TRADES.filter(t => {
+        if (prof && t.profession !== prof) return false;
+        if (dir && t.direction !== dir) return false;
+        if (level && t.level !== level) return false;
+        if (search) {
+          const hay = `${t.display_name} ${t.item_id} ${t.profession} ${t.level}`.toLowerCase();
+          if (!hay.includes(search)) return false;
+        }
+        return true;
+      });
+
+      list = list.map(t => {
+        const price = computeFairPrice(t);
+        const vanilla = vanillaEmeralds(t);
+        const fair = price.fair?.emeralds ?? null;
+        const delta = fair != null ? Math.round((vanilla - fair) * 100) / 100 : null;
+        return { trade: t, price, vanilla, fair, delta };
+      });
+
+      list.sort((a, b) => {
+        if (sortBy === 'delta') {
+          const da = Math.abs(a.delta ?? -999);
+          const db = Math.abs(b.delta ?? -999);
+          return db - da;
+        }
+        if (sortBy === 'item') return a.trade.display_name.localeCompare(b.trade.display_name);
+        const ta = a.trade;
+        const tb = b.trade;
+        const d = profIndex(ta.profession) - profIndex(tb.profession);
+        if (d) return d;
+        const dl = levelIndex(ta.level) - levelIndex(tb.level);
+        if (dl) return dl;
+        return ta.display_name.localeCompare(tb.display_name);
+      });
+
+      return list;
+    }
+
+    function renderTrades() {
+      const list = getFilteredTrades();
+      const tbody = document.getElementById('trade-tbody');
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-msg">No trades match filters.</td></tr>';
+        updateTradeStats();
+        return;
+      }
+
+      tbody.innerHTML = list.map(({ trade, price, vanilla, fair, delta }) => {
+        const dirClass = trade.direction === 'sell' ? 'dir-sell' : 'dir-buy';
+        const dirLabel = trade.direction === 'sell' ? 'SELL' : 'BUY';
+        let fairHtml;
+        if (price.reason) {
+          fairHtml = `<span class="missing-data">${escapeHtml(price.reason)}</span>`;
+        } else {
+          const extra = price.fair.itemsPerEmerald
+            ? `<div class="item-id">${price.fair.itemsPerEmerald} items/em</div>`
+            : '';
+          fairHtml = `<span class="fair-price">${fair} em</span>${extra}`;
+        }
+
+        let deltaHtml = '—';
+        if (delta != null) {
+          const cls = Math.abs(delta) <= 1 ? 'delta-ok' : 'delta-high';
+          const sign = delta > 0 ? '+' : '';
+          deltaHtml = `<span class="${cls}">${sign}${delta} em</span>`;
+        }
+
+        return `<tr>
+          <td>
+            <div class="item-name">${escapeHtml(trade.display_name)}</div>
+            <div class="item-id">${escapeHtml(trade.item_id)}</div>
+            <div><span class="${dirClass}">${dirLabel}</span> · ${escapeHtml(trade.profession)} · ${escapeHtml(trade.level)}</div>
+          </td>
+          <td class="recipe-breakdown">${escapeHtml(formatLeaves(price.leaves))}</td>
+          <td>${price.total || '—'}${price.missing.length ? `<div class="missing-data">+ ${price.missing.length} missing</div>` : ''}</td>
+          <td>${fairHtml}</td>
+          <td class="vanilla-meta">${escapeHtml(formatEmerald(trade))}</td>
+          <td>${deltaHtml}</td>
+        </tr>`;
+      }).join('');
+
+      updateTradeStats();
+    }
+
+    function updateTradeStats() {
+      const computed = TRADES.map(t => computeFairPrice(t)).filter(p => p.fair);
+      const total = TRADES.length;
+      document.getElementById('trade-stats').innerHTML = `
+        <span><strong>${total}</strong> craftable trades (${TRADE_META?.excluded || 'non-craftable excluded'})</span>
+        <span><strong>${computed.length}</strong> / ${total} with fair price computed</span>
+        <span>Showing <strong>${getFilteredTrades().length}</strong></span>
+      `;
+    }
+
+    function pct(n, d) {
+      if (!d) return '0%';
+      return (Math.round((n / d) * 1000) / 10) + '%';
+    }
+
+    function escapeHtml(s) {
+      return String(s ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function escapeAttr(s) {
+      return escapeHtml(s).replace(/'/g, '&#39;');
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      const lab = tab === 'lab';
+      document.getElementById('workspace').classList.toggle('hidden', !lab);
+      document.querySelectorAll('.panel').forEach((el) => {
+        el.classList.toggle('active', el.id === `panel-${tab}`);
+      });
+      if (tab === 'trades') renderTrades();
+      if (tab === 'derivatives') renderDerivatives();
+      if (window.LedgerLabUI && (lab || tab === 'scenario' || tab === 'invariants')) {
+        window.LedgerLabUI.refreshAll();
+      }
+    }
+
+    function switchConfigTab(id) {
+      document.querySelectorAll('[data-config]').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.config === id);
+      });
+      document.getElementById('config-town').classList.toggle('active', id === 'town');
+      document.getElementById('panel-profession').classList.toggle('active', id === 'profession');
+    }
+
+    function initSplit() {
+      const ws = document.getElementById('workspace');
+      const handle = document.getElementById('split-handle');
+      const key = 'ledger-lab-split';
+      const stored = localStorage.getItem(key);
+      if (stored) ws.style.setProperty('--split-left', stored);
+      let dragging = false;
+      const setSplit = (clientX) => {
+        const rect = ws.getBoundingClientRect();
+        const min = 240;
+        const max = rect.width - 240;
+        let left = clientX - rect.left;
+        left = Math.max(min, Math.min(max, left));
+        const val = `${Math.round((left / rect.width) * 1000) / 10}%`;
+        ws.style.setProperty('--split-left', val);
+        localStorage.setItem(key, val);
+      };
+      handle.addEventListener('mousedown', (e) => {
+        dragging = true;
+        e.preventDefault();
+        document.body.classList.add('dragging-split');
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (dragging) setSplit(e.clientX);
+      });
+      window.addEventListener('mouseup', () => {
+        if (!dragging) return;
+        dragging = false;
+        document.body.classList.remove('dragging-split');
+      });
+    }
+
+    function initTabs() {
+      document.getElementById('view-select').addEventListener('change', (e) => switchTab(e.target.value));
+      document.querySelectorAll('[data-config]').forEach((btn) => {
+        btn.addEventListener('click', () => switchConfigTab(btn.dataset.config));
+      });
+      initSplit();
+    }
+
+    function initMaterialFilters() {
+      const list = typeof GATHER_TESTS !== 'undefined' ? GATHER_TESTS : [];
+      const cats = [...new Set(list.map(m => m.category))].sort();
+      const sel = document.getElementById('mat-filter-category');
+      cats.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c;
+        sel.appendChild(opt);
+      });
+      ['mat-filter-category', 'mat-filter-search', 'mat-filter-status'].forEach(id => {
+        document.getElementById(id).addEventListener('input', renderMaterials);
+        document.getElementById(id).addEventListener('change', renderMaterials);
+      });
+      ['der-filter-type', 'der-filter-search'].forEach(id => {
+        document.getElementById(id).addEventListener('input', renderDerivatives);
+        document.getElementById(id).addEventListener('change', renderDerivatives);
+      });
+      document.getElementById('btn-clear-materials').addEventListener('click', async () => {
+        if (!confirm('Reset all material calibration data?')) return;
+        materialsCal = {};
+        renderMaterials();
+        renderDerivatives();
+        renderTrades();
+        await flushCalibrationToFile();
+      });
+    }
+
+    function initTradeFilters() {
+      const sel = document.getElementById('filter-profession');
+      PROFESSION_ORDER.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p;
+        opt.textContent = p.charAt(0).toUpperCase() + p.slice(1);
+        sel.appendChild(opt);
+      });
+      ['filter-profession', 'filter-direction', 'filter-level', 'filter-search', 'sort-by'].forEach(id => {
+        document.getElementById(id).addEventListener('input', renderTrades);
+        document.getElementById(id).addEventListener('change', renderTrades);
+      });
+    }
+
+    document.getElementById('mat-tbody').addEventListener('click', onTimerClick);
+
+    async function boot() {
+      const { materials, migrated } = await loadCalibrationFromFile();
+      materialsCal = materials;
+      initTabs();
+      initMaterialFilters();
+      initTradeFilters();
+      renderMaterials();
+      renderDerivatives();
+      renderTrades();
+      window.TradeCalibrator = {
+        fairEmeraldsForItem(itemKey) {
+          if (!itemKey || typeof TRADES === 'undefined') return null;
+          const needle = String(itemKey).replace(/^minecraft:/, '');
+          const t = TRADES.find(x => String(x.item_id || '').replace(/^minecraft:/, '') === needle);
+          if (!t) return null;
+          const p = computeFairPrice(t);
+          return p.fair?.emeralds ?? null;
+        },
+      };
+      if (window.LedgerLabUI) await window.LedgerLabUI.init();
+      if (migrated) {
+        await flushCalibrationToFile();
+        setSaveStatus('Migrated v1 → v2 materials', 'saved');
+      } else {
+        setSaveStatus('Loaded calibration.json', 'saved');
+      }
+      setTimeout(() => setSaveStatus('', null), 2000);
+    }
+
+    boot().catch(err => {
+      document.body.innerHTML = `<p style="color:#e88;padding:2rem">Failed to start: ${escapeHtml(err.message)}</p>`;
+    });
+  </script>
+</body>
+</html>

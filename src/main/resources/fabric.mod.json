@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"id": "villager_trade_rebalance",
+	"version": "${version}",
+	"name": "Villager Trade Rebalance",
+	"description": "Reprices villager trades so emerald costs reflect item obtainment difficulty.",
+	"authors": [
+		"spicato"
+	],
+	"license": "CC0-1.0",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"villager_trade_rebalance.VillagerTradeRebalance"
+		]
+	},
+	"mixins": [
+		"villager_trade_rebalance.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

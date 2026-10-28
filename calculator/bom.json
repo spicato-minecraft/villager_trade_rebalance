@@ -1,0 +1,18 @@
+{
+  "source": "lab-defaults.js — profession offer pools (blank canvas; fill in the lab)",
+  "professions": {
+    "armorer": [],
+    "butcher": [],
+    "cartographer": [],
+    "cleric": [],
+    "farmer": [],
+    "fisherman": [],
+    "fletcher": [],
+    "leatherworker": [],
+    "librarian": [],
+    "mason": [],
+    "shepherd": [],
+    "toolsmith": [],
+    "weaponsmith": []
+  }
+}
