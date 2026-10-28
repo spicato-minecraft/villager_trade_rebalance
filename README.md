@@ -6,8 +6,8 @@ Reprices villager trades so emerald costs reflect how hard items are to obtain e
 
 ## Compatibility
 
-- **Minecraft:** 26.2
-- **Fabric Loader:** ≥ 0.19.3
+- **Minecraft:** 26.3
+- **Fabric Loader:** ≥ 0.19.5
 - **Fabric API:** Required
 - **Java:** ≥ 25
 
@@ -42,6 +42,6 @@ Tracked in Notion: **Librarian enchanted book trade rules** (under Epic: Village
 
 ## JDK 25
 
-Minecraft 26.2 mods require **JDK 25** to compile and run. This project uses the [Foojay toolchain resolver](https://github.com/gradle/foojay-toolchains) in `settings.gradle` so Gradle can download JDK 25 automatically when it is not installed locally.
+Minecraft 26.3 mods require **JDK 25** to compile and run. This project uses the [Foojay toolchain resolver](https://github.com/gradle/foojay-toolchains) in `settings.gradle` so Gradle can download JDK 25 automatically when it is not installed locally.
 
 If you already have JDK 25, set `JAVA_HOME` to that installation before running Gradle.
