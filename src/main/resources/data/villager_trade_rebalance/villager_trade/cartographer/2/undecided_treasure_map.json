@@ -1,0 +1,31 @@
+{
+	"additional_wants": {
+		"id": "minecraft:compass"
+	},
+	"gives": {
+		"id": "minecraft:filled_map",
+		"components": {
+			"minecraft:custom_name": {
+				"text": "Treasure Map",
+				"italic": false
+			},
+			"minecraft:lore": [
+				{
+					"text": "Tier 1",
+					"color": "gray",
+					"italic": false
+				}
+			],
+			"minecraft:custom_data": {
+				"vtr_map_lane": 1
+			}
+		}
+	},
+	"max_uses": 12,
+	"reputation_discount": 0.2,
+	"wants": {
+		"count": 8,
+		"id": "minecraft:emerald"
+	},
+	"xp": 5
+}

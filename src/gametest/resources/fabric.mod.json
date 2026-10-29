@@ -16,7 +16,12 @@
 			"villager_trade_rebalance.gametest.NonBookLibrarianRowsGameTest",
 			"villager_trade_rebalance.gametest.ConfigDisabledLeavesVanillaGameTest",
 			"villager_trade_rebalance.gametest.NonLibrarianNotRewrittenGameTest",
-			"villager_trade_rebalance.gametest.LibrarianOfferRewriteGameTest"
+			"villager_trade_rebalance.gametest.LibrarianOfferRewriteGameTest",
+			"villager_trade_rebalance.gametest.CartographerUndecidedLanesGameTest",
+			"villager_trade_rebalance.gametest.CartographerCareerLaneGameTest",
+			"villager_trade_rebalance.gametest.CartographerStampAndLocateGameTest",
+			"villager_trade_rebalance.gametest.CartographerCatalogAndCompatGameTest",
+			"villager_trade_rebalance.gametest.CartographerLvtDualModGameTest"
 		]
 	},
 	"depends": {

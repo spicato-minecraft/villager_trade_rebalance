@@ -24,6 +24,7 @@ public final class ModConfig {
 
 	private boolean enabled = true;
 	private LibrarianBooksConfig librarianBooks = LibrarianBooksConfig.defaults();
+	private CartographerMapsConfig cartographerMaps = CartographerMapsConfig.defaults();
 
 	public boolean enabled() {
 		return enabled;
@@ -31,6 +32,10 @@ public final class ModConfig {
 
 	public LibrarianBooksConfig librarianBooks() {
 		return librarianBooks;
+	}
+
+	public CartographerMapsConfig cartographerMaps() {
+		return cartographerMaps;
 	}
 
 	public static ModConfig load() {
@@ -47,13 +52,14 @@ public final class ModConfig {
 			config.save();
 		}
 		VillagerTradeRebalance.LOGGER.info(
-				"Loaded config from {}: enabled={} librarianBooks.enabled={} cost={}-{} allowlist={}",
+				"Loaded config from {}: enabled={} librarianBooks.enabled={} cost={}-{} allowlist={} cartographerMaps.enabled={}",
 				path.toAbsolutePath(),
 				config.enabled,
 				config.librarianBooks.enabled(),
 				config.librarianBooks.baseCostMin(),
 				config.librarianBooks.baseCostMax(),
-				config.librarianBooks.allowlist().size()
+				config.librarianBooks.allowlist().size(),
+				config.cartographerMaps.enabled()
 		);
 		return config;
 	}
@@ -68,6 +74,11 @@ public final class ModConfig {
 			config.librarianBooks = parseLibrarianBooks(root.getAsJsonObject("librarian_books")).sanitized();
 		} else {
 			config.librarianBooks = LibrarianBooksConfig.defaults();
+		}
+		if (root.has("cartographer_maps") && root.get("cartographer_maps").isJsonObject()) {
+			config.cartographerMaps = parseCartographerMaps(root.getAsJsonObject("cartographer_maps")).sanitized();
+		} else {
+			config.cartographerMaps = CartographerMapsConfig.defaults();
 		}
 		return config;
 	}
@@ -97,6 +108,17 @@ public final class ModConfig {
 			}
 		}
 		return new LibrarianBooksConfig(booksEnabled, min, max, allow, blocked, maxLevels);
+	}
+
+	private static CartographerMapsConfig parseCartographerMaps(JsonObject obj) {
+		CartographerMapsConfig defaults = CartographerMapsConfig.defaults();
+		boolean mapsEnabled = !obj.has("enabled") || obj.get("enabled").getAsBoolean();
+		int baseRadius = obj.has("base_radius") ? obj.get("base_radius").getAsInt() : defaults.baseRadius();
+		int maxUses = obj.has("max_uses") ? obj.get("max_uses").getAsInt() : defaults.maxUses();
+		int tier1 = obj.has("tier1_emeralds") ? obj.get("tier1_emeralds").getAsInt() : defaults.tier1Emeralds();
+		int tier2 = obj.has("tier2_emeralds") ? obj.get("tier2_emeralds").getAsInt() : defaults.tier2Emeralds();
+		int tier3 = obj.has("tier3_emeralds") ? obj.get("tier3_emeralds").getAsInt() : defaults.tier3Emeralds();
+		return new CartographerMapsConfig(mapsEnabled, baseRadius, maxUses, tier1, tier2, tier3);
 	}
 
 	private static Set<String> stringSet(JsonArray array) {
@@ -134,6 +156,14 @@ public final class ModConfig {
 		librarianBooks.maxLevels().forEach(maxLevels::addProperty);
 		books.add("max_levels", maxLevels);
 		root.add("librarian_books", books);
+		JsonObject maps = new JsonObject();
+		maps.addProperty("enabled", cartographerMaps.enabled());
+		maps.addProperty("base_radius", cartographerMaps.baseRadius());
+		maps.addProperty("max_uses", cartographerMaps.maxUses());
+		maps.addProperty("tier1_emeralds", cartographerMaps.tier1Emeralds());
+		maps.addProperty("tier2_emeralds", cartographerMaps.tier2Emeralds());
+		maps.addProperty("tier3_emeralds", cartographerMaps.tier3Emeralds());
+		root.add("cartographer_maps", maps);
 		return root;
 	}
 }

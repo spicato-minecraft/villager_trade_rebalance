@@ -14,6 +14,7 @@ import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import net.minecraft.world.entity.npc.villager.VillagerType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -26,9 +27,12 @@ import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import villager_trade_rebalance.VillagerTradeRebalance;
+import villager_trade_rebalance.cartographer.TreasureMapLocator;
 import villager_trade_rebalance.config.ModConfig;
 import villager_trade_rebalance.enchant.LibrarianBookPolicy;
 import villager_trade_rebalance.mixin.VillagerAccessorMixin;
+import villager_trade_rebalance.persist.CartographerTradeData;
+import villager_trade_rebalance.persist.CartographerTradeState;
 import villager_trade_rebalance.persist.LibrarianTradeData;
 import villager_trade_rebalance.persist.LibrarianTradeState;
 import villager_trade_rebalance.trade.LibrarianOfferRewriter;
@@ -62,6 +66,69 @@ final class VillagerTradeRebalanceGameTestHelper {
 		villager.setVillagerData(villager.getVillagerData()
 				.withProfession(villager.registryAccess(), profession)
 				.withLevel(1));
+	}
+
+	static void setVillagerType(Villager villager, ResourceKey<VillagerType> type) {
+		villager.setVillagerData(villager.getVillagerData().withType(villager.registryAccess(), type));
+	}
+
+	static Villager prepareCartographer(GameTestHelper context, int careerLevel) {
+		restoreDefaultConfig();
+		buildFloor(context, 4);
+		context.setBlock(2, 1, 2, Blocks.CARTOGRAPHY_TABLE);
+		Villager villager = spawnVillager(context, 1, 1, 1);
+		assignProfession(villager, VillagerProfession.CARTOGRAPHER);
+		if (careerLevel > 1) {
+			setLevel(villager, careerLevel);
+		}
+		return villager;
+	}
+
+	static CartographerTradeState cartographerState(Villager villager) {
+		return ((CartographerTradeData) villager).villager_trade_rebalance$getCartographerState();
+	}
+
+	static void setCartographerState(Villager villager, CartographerTradeState state) {
+		((CartographerTradeData) villager).villager_trade_rebalance$setCartographerState(state);
+	}
+
+	static long laneCount(Villager villager, int lane) {
+		return villager.getOffers().stream()
+				.filter(offer -> TreasureMapLocator.laneOf(offer).orElse(-1) == lane)
+				.count();
+	}
+
+	static long markedLaneCount(Villager villager) {
+		return villager.getOffers().stream()
+				.filter(offer -> TreasureMapLocator.laneOf(offer).isPresent())
+				.count();
+	}
+
+	static MerchantOffer requireLane(Villager villager, int lane) {
+		return villager.getOffers().stream()
+				.filter(offer -> TreasureMapLocator.laneOf(offer).orElse(-1) == lane)
+				.findFirst()
+				.orElseThrow(() -> fail("Missing lane-" + lane + " treasure map"));
+	}
+
+	static MerchantOffer paperOffer() {
+		return new MerchantOffer(
+				new ItemCost(Items.PAPER, 24),
+				new ItemStack(Items.EMERALD),
+				16,
+				2,
+				0.05f
+		);
+	}
+
+	static MerchantOffer glassPaneOffer() {
+		return new MerchantOffer(
+				new ItemCost(Items.EMERALD, 1),
+				new ItemStack(Items.GLASS_PANE, 11),
+				12,
+				1,
+				0.05f
+		);
 	}
 
 	static void setLevel(Villager villager, int level) {

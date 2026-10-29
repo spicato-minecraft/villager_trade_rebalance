@@ -5,9 +5,11 @@ import net.minecraft.gametest.framework.GameTestHelper;
 
 public class ServerMixinApplySweepGameTest {
 
+	/** G20: cartographer purchase mixin targets stay loaded (Villager + MerchantResultSlot). */
 	@GameTest(maxTicks = 20)
 	public void loadsCommonMixinTargets(GameTestHelper context) {
 		load("net.minecraft.world.entity.npc.villager.Villager");
+		load("net.minecraft.world.inventory.MerchantResultSlot");
 		context.succeed();
 	}
 

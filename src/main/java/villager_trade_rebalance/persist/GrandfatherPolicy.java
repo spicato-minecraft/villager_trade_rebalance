@@ -1,7 +1,7 @@
 package villager_trade_rebalance.persist;
 
 /**
- * Grandfather is decided on world load only: existing offers and no saved tag.
+ * Grandfather is decided on world load only: existing profession offers and no saved flag.
  * Runtime generation (empty offers → vanilla fills them) is always new-rule.
  */
 public final class GrandfatherPolicy {
@@ -24,5 +24,22 @@ public final class GrandfatherPolicy {
 			return current;
 		}
 		return LibrarianTradeState.newRule();
+	}
+
+	public static CartographerTradeState cartographerOnLoad(CartographerTradeState stored, boolean hasLocatedMapOffer) {
+		if (stored != null && stored.initialized()) {
+			return stored;
+		}
+		if (hasLocatedMapOffer) {
+			return CartographerTradeState.ofGrandfathered();
+		}
+		return CartographerTradeState.uninitialized();
+	}
+
+	public static CartographerTradeState cartographerOnRuntimeGeneration(CartographerTradeState current) {
+		if (current != null && current.initialized()) {
+			return current;
+		}
+		return CartographerTradeState.newRule();
 	}
 }
